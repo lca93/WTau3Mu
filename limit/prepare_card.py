@@ -116,7 +116,7 @@ def fline(x, par):
     if reject and x[0] > 1.72 and x[0] < 1.84:
         ROOT.TF1.RejectPoint()
         return 0
-    return math.exp(par[0] + par[1]*x[0])
+    return par[0] + math.exp(par[1]*x[0])
 
 expo = ROOT.TF1('expo', fline, 1.61, 1.99, 2)
 expo.SetParameters(0,0)
@@ -228,6 +228,7 @@ w.Write()
 output.Close()
 
 
+
 # dump the datacard
 with open('datacard%s.txt' %args.category, 'w') as card:
    card.write(
@@ -248,8 +249,6 @@ process                                 signal              background
 process                                 0                   1
 rate                                    {signal:.4f}        {bkg:.4f}
 --------------------------------------------------------------------------------
-bkgNorm{cat}  lnU                       -                   4.00
-a0{cat}       flatParam
 lumi          lnN                       1.025               -   
 xs_W          lnN                       1.037               -   
 br_Wtaunu     lnN                       1.0021              -   
@@ -260,6 +259,8 @@ mu_hlt{cat}   lnN                       {mu_hlt:.4f}        -
 trk_hlt{cat}  lnN                       {trk_hlt:.4f}       -   
 hlt_extrap    lnN                       1.05                -   
 --------------------------------------------------------------------------------
+bkgNorm{cat}  rateParam                 Wtau3mu{cat}        background      {bkg:.4f}   
+a0{cat}       flatParam
 '''.format(
          cat    = args.category,
          signal = sqrt(2.*pi) * sigma * amplitude / 0.01, # area under the normal divided by the bin width (10 MeV)
