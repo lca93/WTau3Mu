@@ -111,7 +111,7 @@ class Tau3MuAnalyzer(Analyzer):
                      ele.mvaIDRun2('NonTrigSpring15MiniAOD', 'POG90') and
                      self.testVertex(ele) and
                      ele.passConversionVeto() and
-                     ele.physObj.gsfTrack().hitPattern().numberOfHits(ROOT.reco.HitPattern.MISSING_INNER_HITS) <= 1 and
+                     ele.physObj.gsfTrack().hitPattern().numberOfAllHits(ROOT.reco.HitPattern.MISSING_INNER_HITS) <= 1 and
                      ele.relIsoR(R=0.3, dBetaFactor=0.5, allCharged=0) < 0.3]
         return electrons
 
