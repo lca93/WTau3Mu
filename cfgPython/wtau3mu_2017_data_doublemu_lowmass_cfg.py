@@ -45,7 +45,7 @@ puFileMC   = puFileData ## to be produced
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , True )
+production         = getHeppyOption('production'        , False )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -252,7 +252,7 @@ if not production:
 
 #     comp.files           = comp.files[:1]
     comp.files = [
-         'file:/eos/cms//store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver2-v1/110000/08ADA6AA-D3EC-E611-AF17-B083FED42488.root'
+        'root://cms-xrd-global.cern.ch//store/data/Run2017F/DoubleMuonLowMass/MINIAOD/31Mar2018-v1/310000/189907AD-8A39-E811-978D-FA163EA79EBD.root'
     ]
 
 preprocessor = None
