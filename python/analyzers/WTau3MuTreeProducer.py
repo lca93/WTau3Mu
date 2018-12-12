@@ -232,6 +232,17 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         self.fill(self.tree, 'hlt_doublemu4_lowmassnonresonanttrk_displaced', any('HLT_DoubleMu4_LowMassNonResonantTrk_Displaced' in name for name in event.tau3mu.hltmatched))
         self.fill(self.tree, 'hlt_triplemu_12_10_5'                         , any('HLT_TripleMu_12_10_5'                          in name for name in event.tau3mu.hltmatched))
     
+        ## MET filter information
+        self.fill(self.tree, 'Flag_goodVertices'                      , event.Flag_goodVertices                      )
+        self.fill(self.tree, 'Flag_globalSuperTightHalo2016Filter'    , event.Flag_globalSuperTightHalo2016Filter    )
+        self.fill(self.tree, 'Flag_HBHENoiseFilter'                   , event.Flag_HBHENoiseFilter                   )
+        self.fill(self.tree, 'Flag_HBHENoiseIsoFilter'                , event.Flag_HBHENoiseIsoFilter                )
+        self.fill(self.tree, 'Flag_EcalDeadCellTriggerPrimitiveFilter', event.Flag_EcalDeadCellTriggerPrimitiveFilter)
+        self.fill(self.tree, 'Flag_BadPFMuonFilter'                   , event.Flag_BadPFMuonFilter                   )
+        self.fill(self.tree, 'Flag_BadChargedCandidateFilter'         , event.Flag_BadChargedCandidateFilter         )
+        self.fill(self.tree, 'Flag_eeBadScFilter'                     , event.Flag_eeBadScFilter                     )
+        self.fill(self.tree, 'Flag_ecalBadCalibFilter'                , event.Flag_ecalBadCalibFilter                )
+
         # BDT output
         if hasattr(event, 'bdt_proba'):
             self.fill(self.tree, 'bdt_proba', event.bdt_proba)

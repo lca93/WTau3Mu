@@ -26,12 +26,15 @@ event_vars = [
     Variable('is_data', lambda ev: ev.input.eventAuxiliary().isRealData(), type=int),
     Variable('nPU', lambda ev : -99 if getattr(ev, 'nPU', -1) is None else getattr(ev, 'nPU', -1)),
     Variable('rho', lambda ev : ev.rho),
-    Variable('Flag_HBHENoiseFilter', type=int),
-    Variable('Flag_HBHENoiseIsoFilter', type=int),
-    Variable('Flag_EcalDeadCellTriggerPrimitiveFilter', type=int),
-    Variable('Flag_goodVertices', type=int),
-    Variable('Flag_eeBadScFilter', type=int),
-    Variable('Flag_globalTightHalo2016Filter', type=int),
+    Variable('Flag_goodVertices'                      , type=int)
+    Variable('Flag_globalSuperTightHalo2016Filter'    , type=int)
+    Variable('Flag_HBHENoiseFilter'                   , type=int)
+    Variable('Flag_HBHENoiseIsoFilter'                , type=int)
+    Variable('Flag_EcalDeadCellTriggerPrimitiveFilter', type=int)
+    Variable('Flag_BadPFMuonFilter'                   , type=int)
+    Variable('Flag_BadChargedCandidateFilter'         , type=int)
+    Variable('Flag_eeBadScFilter'                     , type=int)
+    Variable('Flag_ecalBadCalibFilter'                , type=int)
     Variable('passBadMuonFilter', type=int),
     Variable('passBadChargedHadronFilter', type=int),
     Variable('n_muons'    , lambda ev : len(ev.muons), type=int),
