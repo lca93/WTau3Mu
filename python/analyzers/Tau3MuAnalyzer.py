@@ -112,7 +112,7 @@ class Tau3MuAnalyzer(Analyzer):
                      self.testVertex(ele) and
                      ele.passConversionVeto() and
                      ele.physObj.gsfTrack().hitPattern().numberOfAllHits(ROOT.reco.HitPattern.MISSING_INNER_HITS) <= 1 and
-                     ele.relIsoR(R=0.3, dBetaFactor=0.5, allCharged=0) < 0.3]
+                     ele.relIso(iso_type='dbeta', cone_size=0.3, dbeta_factor=0.5, all_charged=0) < 0.3]
         return electrons
 
     def buildTaus(self, taus, event):
