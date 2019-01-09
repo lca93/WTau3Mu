@@ -56,8 +56,8 @@ use_mvamet         = getHeppyOption('use_mvamet'        , False)
 ###################################################
 for sample in samples:
     # triggers you want in DoubleMuonLowMass
-    sample.triggers    = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'            %i for i in range(1, 12)]
-    #sample.triggers    += ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1_v%d'   %i for i in range(1, 12)]
+    sample.triggers    = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'         %i for i in range(1, 12)]
+    sample.triggers   += ['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1_v%d' %i for i in range(1, 12)]
 
     sample.splitFactor = splitFactor(sample, 1e05)
     sample.json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt'
