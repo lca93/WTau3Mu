@@ -169,7 +169,9 @@ class Tau3MuAnalyzer(Analyzer):
         if getattr(self.cfg_ana, 'useMVAmet', False):
             event.tau3mus = [Tau3MuMET(triplet, event.mvamets, useMVAmet=True) for triplet in combinations(event.muons, 3)]
         else:
-            event.tau3mus = [Tau3MuMET(triplet, event.pfmet) for triplet in combinations(event.muons, 3)]
+            #event.tau3mus = [Tau3MuMET(triplet, event.pfmet) for triplet in combinations(event.muons, 3)]
+            event.tau3mus = [Tau3MuMET(triplet, event.puppimet) for triplet in combinations(event.muons, 3)]
+
 
         # testing di-lepton itself
         seltau3mu = event.tau3mus
