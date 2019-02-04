@@ -33,6 +33,8 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         self.var(self.tree, 'HTbjets')
         self.var(self.tree, 'njets'  )
         self.var(self.tree, 'nbjets' )
+        self.var(self.tree, 'ncand_hltpass')
+        self.var(self.tree, 'dR_tau_hlt')
 
         # generator information
         self.bookGenParticle(self.tree, 'gen_w')
@@ -41,6 +43,10 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         self.bookGenParticle(self.tree, 'mu3_refit_gen')
         self.bookGenParticle(self.tree, 'cand_refit_gen')
         self.bookParticle(self.tree, 'gen_met')
+
+        ## particles information
+        self.bookParticle(self.tree, 'HLT_tau')
+
 
         # trigger information
         if hasattr(self.cfg_ana, 'fillL1') and self.cfg_ana.fillL1:
@@ -125,6 +131,19 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
 
         if hasattr(event, 'gentau') and event.gentau is not None: 
             self.fillParticle(self.tree, 'cand_refit_gen', event.gentau)
+
+        ## particles information
+        if hasattr(event, 'HLT_tau'):
+            self.fillParticle(self.tree, 'HLT_tau', event.hltmatched[0])
+        
+        if hasattr(event, 'ncand_hltpass'):
+            self.fill(self.tree, 'ncand_hltpass', event.ncand_hltpass)
+
+        if hasattr(event, 'dR_tau_hlt'):
+            self.fill(self.tree, 'dR_tau_hlt', event.dR_tau_hlt)
+
+        ## muon filters informations
+        
 
         # trigger information
         if hasattr(self.cfg_ana, 'fillL1') and self.cfg_ana.fillL1:
