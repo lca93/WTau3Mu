@@ -166,11 +166,12 @@ class Tau3MuAnalyzer(Analyzer):
 
         # self.counters.counter('Tau3Mu').inc('pass resonance veto')
 
-        if getattr(self.cfg_ana, 'useMVAmet', False):
+        if   getattr(self.cfg_ana, 'useMVAmet', False):
             event.tau3mus = [Tau3MuMET(triplet, event.mvamets, useMVAmet=True) for triplet in combinations(event.muons, 3)]
-        else:
-            #event.tau3mus = [Tau3MuMET(triplet, event.pfmet) for triplet in combinations(event.muons, 3)]
+        elif getattr(self.cfg_ana, 'usePUPPImet', False):
             event.tau3mus = [Tau3MuMET(triplet, event.puppimet) for triplet in combinations(event.muons, 3)]
+        else:
+            event.tau3mus = [Tau3MuMET(triplet, event.pfmet) for triplet in combinations(event.muons, 3)]
 
 
         # testing di-lepton itself

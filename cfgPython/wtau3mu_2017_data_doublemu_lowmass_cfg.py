@@ -51,6 +51,12 @@ kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
 compute_mvamet     = getHeppyOption('compute_mvamet'    , False)
 use_mvamet         = getHeppyOption('use_mvamet'        , False)
+use_puppimet       = getHeppyOption('use_puppimet'      , True )
+
+if use_mvamet and use_puppimet:
+    print 'WARNING: ignoring PUPPI MET, using MVA MET'
+    use_puppimet = False
+
 ###################################################
 ###               HANDLE SAMPLES                ###
 ###################################################
@@ -124,7 +130,8 @@ tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
     name='Tau3MuAnalyzer',
     trigger_match = triggers_and_filters,
-    useMVAmet = use_mvamet,
+    useMVAmet   = use_mvamet  ,
+    usePUPPImet = use_puppimet,
 )
 
 treeProducer = cfg.Analyzer(
