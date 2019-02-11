@@ -124,7 +124,8 @@ pileUpAna = cfg.Analyzer(
 triggers_and_filters = OrderedDict()
 
 ## trigger matching to be implemented in Tau3MuAnalyzer for 2017 trigger
-# triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))  
+#triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))
+triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1'] = (['hltTau3MuPreFilter'])
 
 tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
@@ -132,6 +133,7 @@ tau3MuAna = cfg.Analyzer(
     trigger_match = triggers_and_filters,
     useMVAmet   = use_mvamet  ,
     usePUPPImet = use_puppimet,
+    last_filter = 'hltTau3MuIsoFilter',
 )
 
 treeProducer = cfg.Analyzer(
