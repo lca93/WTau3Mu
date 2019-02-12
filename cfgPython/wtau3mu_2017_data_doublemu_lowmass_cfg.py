@@ -125,7 +125,8 @@ triggers_and_filters = OrderedDict()
 
 ## trigger matching to be implemented in Tau3MuAnalyzer for 2017 trigger
 #triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))
-triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1'] = (['hltTau3MuPreFilter'])
+triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']         = 'hltTau3MuPreFilter'
+triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1'] = 'hltTau3MuPreFilterCharge1'
 
 tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
@@ -133,7 +134,6 @@ tau3MuAna = cfg.Analyzer(
     trigger_match = triggers_and_filters,
     useMVAmet   = use_mvamet  ,
     usePUPPImet = use_puppimet,
-    last_filter = 'hltTau3MuIsoFilter',
 )
 
 treeProducer = cfg.Analyzer(
@@ -261,7 +261,8 @@ if not production:
 
 #     comp.files           = comp.files[:1]
     comp.files = [
-        'root://cms-xrd-global.cern.ch//store/data/Run2017F/DoubleMuonLowMass/MINIAOD/31Mar2018-v1/310000/189907AD-8A39-E811-978D-FA163EA79EBD.root'
+        'root://cms-xrd-global.cern.ch//store/data/Run2017C/DoubleMuonLowMass/MINIAOD/31Mar2018-v1/20000/B80D08A2-EA3D-E811-8028-002590E7DFEE.root', ## runC
+        'root://cms-xrd-global.cern.ch//store/data/Run2017F/DoubleMuonLowMass/MINIAOD/31Mar2018-v1/30000/24FEB7F3-5137-E811-9347-24BE05C44BC1.root', ## runF
     ]
 
 preprocessor = None

@@ -151,20 +151,15 @@ class Tau3MuAnalyzer(Analyzer):
         return good
 
     def selectionSequence(self, event):
-
         self.counters.counter('Tau3Mu').inc('all events')
 
         if len(event.muons) < 3:
             return False
+        
+        ## Init to True
+        event.trigger_matched = True
 
         self.counters.counter('Tau3Mu').inc('> 0 tri-muon')
-
-        # event.muons = self.resonanceVeto(event.muons)
-
-        # if len(event.muons) < 3:
-        #     return False
-
-        # self.counters.counter('Tau3Mu').inc('pass resonance veto')
 
         if   getattr(self.cfg_ana, 'useMVAmet', False):
             event.tau3mus = [Tau3MuMET(triplet, event.mvamets, useMVAmet=True) for triplet in combinations(event.muons, 3)]
@@ -172,7 +167,6 @@ class Tau3MuAnalyzer(Analyzer):
             event.tau3mus = [Tau3MuMET(triplet, event.puppimet) for triplet in combinations(event.muons, 3)]
         else:
             event.tau3mus = [Tau3MuMET(triplet, event.pfmet) for triplet in combinations(event.muons, 3)]
-
 
         # testing di-lepton itself
         seltau3mu = event.tau3mus
@@ -210,12 +204,17 @@ class Tau3MuAnalyzer(Analyzer):
 
         # trigger matching
         if hasattr(self.cfg_ana, 'trigger_match') and len(self.cfg_ana.trigger_match.keys())>0:
-                                   
+            ## re-init to False if we require the trigger matching
+            event.trigger_matched = False
+            ## match only if the one of the trigger of interest has been fired
+            if not any(trigger in fired_triggers for trigger, fired_triggers in product(self.cfg_ana.trigger_match.keys(), event.fired_triggers)):
+                return False
+
             for triplet in seltau3mu:
                 muons = (triplet.mu1(), triplet.mu2(), triplet.mu3())
                 triplet.hltmatched = []
 
-                # 2017: match only the tau
+                ## 2017: match only the tau
                 for info in event.trigger_infos:
 
                     mykey = '_'.join(info.name.split('_')[:-1])
@@ -231,12 +230,13 @@ class Tau3MuAnalyzer(Analyzer):
                     p4_t = p4_1 + p4_2 + p4_3
 
                     ## create a list of matching objects which satisfies the last HLT filter label
-                    ## in the end, only one tau should survive, so that the sorting is unnecessary
-                    ## NOTE: change the code in order to pass the correct last filter for each trigger
+                    trigger_name_no_version = '_'.join(info.name.split('_')[:-1])
+                    tau_filter   = self.cfg_ana.trigger_match[trigger_name_no_version]
+                    
                     matched_to_tau = [obj for obj in info.objects   if deltaR(p4_t.Eta(), p4_t.Phi(), obj.eta(), obj.phi()) < 0.25]
-                    matched_to_tau = [obj for obj in matched_to_tau if self.cfg_ana.last_filter in obj.filterLabels()]
+                    matched_to_tau = [obj for obj in matched_to_tau if tau_filter in obj.filterLabels()]
                     matched_to_tau = sorted(matched_to_tau, key = lambda obj: deltaR(p4_t.Eta(), p4_t.Phi(), obj.eta(), obj.phi()))
-                                
+
                     if len(matched_to_tau) > 0:
                         triplet.hltmatched = matched_to_tau
                         triplet.p4_tau = p4_t 
@@ -245,16 +245,12 @@ class Tau3MuAnalyzer(Analyzer):
             
             if len(seltau3mu) == 0:
                 return False
+                
+            event.trigger_matched = True
             self.counters.counter('Tau3Mu').inc('trigger matched')
 
         event.seltau3mu = seltau3mu
         event.tau3mu = self.bestTriplet(event.seltau3mu)
-
-        ## USEFUL INFORMATIONS
-        event.ncand_hltpass = len(seltau3mu)
-        event.pt_res_HLT =  event.tau3mu.p4_tau.Pt() - event.tau3mu.hltmatched[0].pt()
-        event.dR_tau_hlt =  deltaR( event.tau3mu.p4_tau.Eta()        , event.tau3mu.p4_tau.Phi(), 
-                                    event.tau3mu.hltmatched[0].eta() , event.tau3mu.hltmatched[0].phi())
 
         return True
 

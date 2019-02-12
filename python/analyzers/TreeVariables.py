@@ -44,8 +44,6 @@ event_vars = [
     Variable('n_vtx', lambda ev : len(ev.goodVertices), type=int),
     Variable('weight', lambda ev : ev.eventWeight, type=float),
     Variable('puweight', lambda ev : ev.puWeight, type=float),
-    Variable('tau_pt_diff', lambda ev: ev.pt_res_HLT, type = float),
-    Variable('tau_charge' , lambda ev: ev.tau3mu.charge(), type = int),
 ]
 
 # triplet variables
