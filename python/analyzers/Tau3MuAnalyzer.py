@@ -108,7 +108,7 @@ class Tau3MuAnalyzer(Analyzer):
                      ele.pt()>10 and
                      abs(ele.eta())<2.5 and
                      # ele.mvaIDRun2('Spring16', 'Veto') and # why?
-                     ele.mvaIDRun2('NonTrigSpring15MiniAOD', 'POG90') and
+                     #ele.mvaIDRun2('NonTrigSpring15MiniAOD', 'POG90') and
                      self.testVertex(ele) and
                      ele.passConversionVeto() and
                      ele.physObj.gsfTrack().hitPattern().numberOfAllHits(ROOT.reco.HitPattern.MISSING_INNER_HITS) <= 1 and

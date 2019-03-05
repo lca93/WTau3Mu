@@ -5,6 +5,8 @@ from PhysicsTools.HeppyCore.framework.heppy_loop import getHeppyOption
 from PhysicsTools.Heppy.utils.cmsswPreprocessor import CmsswPreprocessor
 from CMGTools.RootTools.utils.splitFactor import splitFactor
 
+from collections import OrderedDict
+
 # import all analysers:
 # Heppy analyzers
 from PhysicsTools.Heppy.analyzers.core.JSONAnalyzer                 import JSONAnalyzer
@@ -16,13 +18,13 @@ from PhysicsTools.Heppy.analyzers.gen.GeneratorAnalyzer             import Gener
 from PhysicsTools.Heppy.analyzers.gen.LHEWeightAnalyzer             import LHEWeightAnalyzer
         
 # Tau-tau analysers        
-from CMGTools.H2TauTau.proto.analyzers.TriggerAnalyzer              import TriggerAnalyzer
 from CMGTools.H2TauTau.proto.analyzers.METFilter                    import METFilter
 from CMGTools.H2TauTau.proto.analyzers.FileCleaner                  import FileCleaner
 from CMGTools.H2TauTau.proto.analyzers.JetAnalyzer                  import JetAnalyzer
 
 #WTau3Mu analysers
 from CMGTools.WTau3Mu.analyzers.Tau3MuAnalyzer                      import Tau3MuAnalyzer
+from CMGTools.WTau3Mu .analyzers.TriggerAnalyzer                    import TriggerAnalyzer
 from CMGTools.WTau3Mu.analyzers.WTau3MuTreeProducer                 import WTau3MuTreeProducer
 from CMGTools.WTau3Mu.analyzers.Tau3MuKalmanVertexFitterAnalyzer    import Tau3MuKalmanVertexFitterAnalyzer
 from CMGTools.WTau3Mu.analyzers.Tau3MuKinematicVertexFitterAnalyzer import Tau3MuKinematicVertexFitterAnalyzer
@@ -36,8 +38,11 @@ from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import Recoi
 # import samples, signal
 from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu
 
-puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
-puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
+#puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
+#puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
+
+puFileData = '/afs/cern.ch/user/l/lguzzi/public/PUfiles_2017/pileup_WJetsToLNu.root'
+puFileMC   = puFileData ## to be produced
 
 ###################################################
 ###                   OPTIONS                   ###
@@ -48,13 +53,16 @@ production         = getHeppyOption('production'        , False)
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
+compute_mvamet     = getHeppyOption('compute_mvamet'    , False)
+use_mvamet         = getHeppyOption('use_mvamet'        , False)
+use_puppimet       = getHeppyOption('use_puppimet'      , True )
 ###################################################
 ###               HANDLE SAMPLES                ###
 ###################################################
 samples = [WToTauTo3Mu]
 
 for sample in samples:
-#     sample.triggers = ['HLT_DoubleMu3_Trk_Tau3mu_v%d' %i for i in range(1, 5)]
+    sample.triggers = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d' %i for i in range(1, 12)]
     # specify which muon should match to which filter. 
 #     sample.trigger_filters = [
 #         (lambda triplet : triplet.mu1(), ['hltTau3muTkVertexFilter']),
@@ -95,8 +103,10 @@ triggerAna = cfg.Analyzer(
     TriggerAnalyzer,
     name='TriggerAnalyzer',
     addTriggerObjects=True,
-    requireTrigger=False,
-    usePrescaled=False
+    requireTrigger=True,
+    unpackLabels=True,
+    usePrescaled=False,
+    triggerObjectsHandle =  ('slimmedPatTrigger', '', 'PAT'),
 )
 
 vertexAna = cfg.Analyzer(
@@ -116,10 +126,20 @@ pileUpAna = cfg.Analyzer(
 genAna = GeneratorAnalyzer.defaultConfig
 genAna.allGenTaus = True # save in event.gentaus *ALL* taus, regardless whether hadronic / leptonic decay
 
+# for each path specify which filters you want the muons to match to
+triggers_and_filters = OrderedDict()
+
+## trigger matching to be implemented in Tau3MuAnalyzer for 2017 trigger
+#triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))
+triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']         = 'hltTau3MuPreFilter'
+triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1'] = 'hltTau3MuPreFilterCharge1'
+
 tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
     name='Tau3MuAnalyzer',
-    trigger_match=False,
+    trigger_match = triggers_and_filters,
+    useMVAmet   = use_mvamet  ,
+    usePUPPImet = use_puppimet,
 )
 
 treeProducer = cfg.Analyzer(
@@ -178,19 +198,19 @@ recoilAna = cfg.Analyzer(
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/SMTauTau2016#Jet_Energy_Corrections
 jetAna = cfg.Analyzer(
     JetAnalyzer,
-    name='JetAnalyzer',
-    jetCol='slimmedJets',
-    jetPt=20.,
-    jetEta=4.7,
-    relaxJetId=False, # relax = do not apply jet ID
-    relaxPuJetId=True, # relax = do not apply pileup jet ID
-    jerCorr=False,
+    name                = 'JetAnalyzer',
+    jetCol              = 'slimmedJets',
+    jetPt               = 20.,
+    jetEta              = 4.7,
+    relaxJetId          = False, # relax = do not apply jet ID
+    relaxPuJetId        = True, # relax = do not apply pileup jet ID
+    jerCorr             = False,
     #jesCorr = 1., # Shift jet energy scale in terms of uncertainties (1 = +1 sigma)
-    puJetIDDisc='pileupJetId:fullDiscriminant',
-    recalibrateJets=True,
-    applyL2L3Residual='MC',
-    mcGT='80X_mcRun2_asymptotic_2016_TrancheIV_v8',
-    dataGT='80X_dataRun2_2016SeptRepro_v7',
+    puJetIDDisc         = 'pileupJetId:fullDiscriminant',
+    recalibrateJets     = True,
+    applyL2L3Residual   = 'MC',
+    mcGT                = '80X_mcRun2_asymptotic_2016_TrancheIV_v8',
+    dataGT              = '80X_dataRun2_2016SeptRepro_v7'  
 )
 
 fileCleaner = cfg.Analyzer(
@@ -210,11 +230,11 @@ sequence = cfg.Sequence([
     vertexAna,
     pileUpAna,
     tau3MuAna,
-#     jetAna,
+    jetAna,
     genMatchAna,
 #     recoilAna,
     vertexFitter,
-    muIdAna,
+    #muIdAna,
     isoAna,
 #     level1Ana,
     bdtAna,
