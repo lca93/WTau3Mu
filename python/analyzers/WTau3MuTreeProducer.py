@@ -1,6 +1,7 @@
 import ROOT
 from CMGTools.WTau3Mu.analyzers.WTau3MuTreeProducerBase import WTau3MuTreeProducerBase
 from PhysicsTools.HeppyCore.utils.deltar import deltaR
+from itertools import product
 
 global muon_mass
 muon_mass = 0.1056583745
@@ -47,6 +48,25 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         ## particles information
         self.bookParticle(self.tree, 'HLT_tau')
 
+        ## Resonances (see PiKMassAnalyzer)
+        self.list_of_mass_hypothesis = []
+        ## build the mass hypothesis combinations accoridng to PiKMassAnalyzer definitions
+        for ll in ( ('k', 'p'), ('k', 'm'), ('p', 'm')):
+            for (l1, l2, l3) in product(ll, repeat = 3):
+                if l1 == l2 == l3: continue
+                ## only 0 or 2 muons
+                if sum([obj == 'm' for obj in (l1, l2, l3)]) == 1:
+                    continue
+                
+                self.list_of_mass_hypothesis.append(''.join(['mass_'  , l1, l2, l3]))
+                self.list_of_mass_hypothesis.append(''.join(['mass12_', l1, l2]))
+                self.list_of_mass_hypothesis.append(''.join(['mass13_', l1, l3]))
+                self.list_of_mass_hypothesis.append(''.join(['mass23_', l2, l3]))
+        ## remove duplicates arising from two-body masses 
+        ## (e.g. PiPiK and PiKK would fill the  mass13_pk value twice)
+        self.list_of_mass_hypothesis = list(set(self.list_of_mass_hypothesis))
+        for ll in self.list_of_mass_hypothesis:
+                self.var(self.tree, ll)
 
         # trigger information
         if hasattr(self.cfg_ana, 'fillL1') and self.cfg_ana.fillL1:
@@ -264,6 +284,10 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         self.fill(self.tree, 'HTbjets', event.HT_bJets       )
         self.fill(self.tree, 'njets'  , len(event.cleanJets) )
         self.fill(self.tree, 'nbjets' , len(event.cleanBJets))
+
+        ## fill resonances infos (see booking of variables)
+        for ll in self.list_of_mass_hypothesis:
+            self.fill(self.tree, ll, getattr(event, ll, -99))
 
         # weights
         self.fill(self.tree, 'mu1_id_sf'   , getattr(event.tau3mu.mu1(), 'idweight'      , 1.))
