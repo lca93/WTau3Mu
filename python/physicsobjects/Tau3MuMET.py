@@ -86,25 +86,16 @@ class Tau3MuMET(object):
         B = -2.*constant*self.p4Muons().pz()
         C = self.p4Muons().energy()**2*self.met().pt()**2 - constant**2
         
-        radical = B**2 - 4.*A*C
+        # prevent complex solutions
+        radical = max(0., B**2 - 4.*A*C)
         
-        if radical>=0.:
-            mez_plus  = 0.5 * ( -B + math.sqrt(radical) ) / A
-            mez_minus = 0.5 * ( -B - math.sqrt(radical) ) / A
-        else: 
-            mez_plus  = 0.
-            mez_minus = 0.
-            # non physical solutions might simply be resolution effects. 
-            # Should think of how to treat them, e.g. set the square root argument to 0
-            return Math.LorentzVector('<ROOT::Math::PxPyPzE4D<double>')(0., 0., 0., 0.), Math.LorentzVector('<ROOT::Math::PxPyPzE4D<double>')(0., 0., 0., 0.)
-
-        if abs(mez_plus) > abs(mez_minus):
-            mez_min = mez_minus
-            mez_max = mez_plus
-        else:
-            mez_min = mez_plus
-            mez_max = mez_minus
-
+        # sort
+        mez_p = 0.5 * ( -B + math.sqrt(radical) ) / A 
+        mez_m = 0.5 * ( -B - math.sqrt(radical) ) / A 
+        
+        mez_min = mez_p if abs(mez_p) < abs(mez_m) else mez_m
+        mez_max = mez_p if abs(mez_p) > abs(mez_m) else mez_m
+        
         energy_min = math.sqrt(self.met().pt()**2 + mez_min**2)
         energy_max = math.sqrt(self.met().pt()**2 + mez_max**2)
         

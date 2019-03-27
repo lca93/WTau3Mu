@@ -45,11 +45,23 @@ class GenMatcherAnalyzer(Analyzer):
         
         neutrinos = [pp for pp in event.genParticles if abs(pp.pdgId()) in [12, 14, 16] and pp.status()==1]
         
+        # total met, including PU   
         for i, nn in enumerate(neutrinos):
             if i==0:
                 event.genmet = nn.p4()
             else:
                 event.genmet += nn.p4()
+
+        
+        # met from the W
+        if hasattr(event, 'genw'):
+            try:
+                event.gennufromw = [event.genw.daughter(jj) for jj in range(event.genw.numberOfDaughters()) if abs(event.genw.daughter(jj).pdgId())==16][0]
+            except:
+                import pdb ; pdb.set_trace()
+            
+#         tau_genw[0]
+
 
 #         if not hasattr(muons[0], 'genp') or (hasattr(muons[0], 'genp') and abs(muons[0].genp.pdgId())!=13):
 #             import pdb ; pdb.set_trace()

@@ -71,6 +71,8 @@ triplet_vars = [
     Variable('w_isgood'                          , lambda cand : cand.reco_w()[0].mass()>0              ),
     Variable('w_eta_1'                           , lambda cand : cand.reco_w()[0].eta()                 ),
     Variable('w_eta_2'                           , lambda cand : cand.reco_w()[1].eta()                 ),
+    Variable('w_pz_1'                            , lambda cand : cand.reco_w()[0].pz()                  ),
+    Variable('w_pz_2'                            , lambda cand : cand.reco_w()[1].pz()                  ),
     Variable('mt1'                               , lambda cand : cand.mt1()                             ),
     Variable('mt2'                               , lambda cand : cand.mt2()                             ),
     Variable('mt3'                               , lambda cand : cand.mt3()                             ),
