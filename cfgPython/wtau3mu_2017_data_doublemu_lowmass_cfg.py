@@ -33,6 +33,7 @@ from CMGTools.WTau3Mu.analyzers.L1TriggerAnalyzer                   import L1Tri
 from CMGTools.WTau3Mu.analyzers.BDTAnalyzer                         import BDTAnalyzer
 from CMGTools.WTau3Mu.analyzers.MVAMuonIDAnalyzer                   import MVAMuonIDAnalyzer
 from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import RecoilCorrector
+from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMassAnalyzer
 
 # import samples
 from CMGTools.WTau3Mu.samples.data_2017                             import datasamplesDoubleMuLowMass31Mar2018 as samples
@@ -220,6 +221,14 @@ jetAna = cfg.Analyzer(
     #jesCorr = 1., # Shift jet energy scale in terms of uncertainties (1 = +1 sigma)
 )
 
+## save infos about mass values undder different mass hypothesis
+## (permutations of KKPi, PiPiK, MuMuK, MuMuPi)
+PiKMassAna = cfg.Analyzer(
+    PiKMassAnalyzer,
+    name='PiKMassAna',
+    getter = lambda event : [event.tau3muRefit.mu1(), event.tau3muRefit.mu2(), event.tau3muRefit.mu3()],
+)
+
 fileCleaner = cfg.Analyzer(
     FileCleaner,
     name='FileCleaner'
@@ -243,6 +252,7 @@ sequence = cfg.Sequence([
 #    level1Ana,
     bdtAna,
     metFilter,
+    PiKMassAna,
     treeProducer,
 ])
 
