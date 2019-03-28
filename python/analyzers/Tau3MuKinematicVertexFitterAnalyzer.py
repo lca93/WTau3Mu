@@ -281,7 +281,11 @@ class Tau3MuKinematicVertexFitterAnalyzer(Analyzer):
 #         print 'refitted tau3mu MET after corrections pt ', event.tau3muRefit.met().pt()
 #         print 'refitted tau3mu MET after corrections phi', event.tau3muRefit.met().phi()
 #         print 'refitted tau3mu mT  after corrections    ', event.tau3muRefit.mttau()
-        
+
+        ## get the kinfit error of the tau mass
+        ## see https://github.com/cms-cvs-history/RecoVertex-KinematicFitPrimitives/blob/master/interface/KinematicParameters.h#L10
+        event.tau3muRefit.mass_kinfit_error = tauref.currentState().kinematicParametersError().matrix()(6, 6)
+
         return True
 
     @staticmethod

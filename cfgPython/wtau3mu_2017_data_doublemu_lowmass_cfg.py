@@ -46,7 +46,7 @@ puFileMC   = puFileData ## to be produced
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , False )
+production         = getHeppyOption('production'        , True )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -156,7 +156,7 @@ metFilter = cfg.Analyzer(
         'Flag_HBHENoiseIsoFilter',
         'Flag_EcalDeadCellTriggerPrimitiveFilter',
         'Flag_BadPFMuonFilter',
-        'Flag_BadChargedCandidateFilter',       ## marked as "not reccomanded, under review" on the twiki
+        'Flag_BadChargedCandidateFilter',       ## marked as "not reccomended, under review" on the twiki
         'Flag_eeBadScFilter',
         'Flag_ecalBadCalibFilter',              ## NOTE: not listed on the twiki
         'ecalBadCalibReducedMINIAODFilter',     ## NOTE: to be rerun on miniaod?, see twiki

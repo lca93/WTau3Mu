@@ -156,7 +156,7 @@ metFilter = cfg.Analyzer(
         'Flag_HBHENoiseIsoFilter',
         'Flag_EcalDeadCellTriggerPrimitiveFilter',
         'Flag_BadPFMuonFilter',
-        'Flag_BadChargedCandidateFilter',       ## marked as "not reccomanded, under review" on the twiki
+        'Flag_BadChargedCandidateFilter',       ## marked as "not reccomended, under review" on the twiki
         'Flag_eeBadScFilter',
         'Flag_ecalBadCalibFilter',              ## NOTE: not listed on the twiki
         'ecalBadCalibReducedMINIAODFilter',     ## NOTE: to be rerun on miniaod?, see twiki

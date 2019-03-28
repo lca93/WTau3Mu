@@ -85,6 +85,7 @@ triplet_vars = [
     Variable('tau_eta'                           , lambda cand : cand.p4Muons().eta()                   ),
     Variable('tau_phi'                           , lambda cand : cand.p4Muons().phi()                   ),
     Variable('tau_mass'                          , lambda cand : cand.p4Muons().mass()                  ),
+    Variable('tau_massE'                         , lambda cand : getattr(cand, 'mass_kinfit_error', -99)),
     Variable('tau_dBetaIsoCone0p8strength0p2_abs'                                                       ),
     Variable('tau_dBetaIsoCone0p8strength0p2_rel'                                                       ),
     Variable('tau_absChargedFromPV'              , lambda cand : cand.absChargedFromPV                  ),
