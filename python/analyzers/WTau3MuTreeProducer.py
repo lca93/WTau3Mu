@@ -48,6 +48,21 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         ## particles information
         self.bookParticle(self.tree, 'HLT_tau')
 
+        ## MET filter information
+        self.var(self.tree, 'Flag_goodVertices'                      , type=int, storageType='B'),
+        self.var(self.tree, 'Flag_globalSuperTightHalo2016Filter'    , type=int, storageType='B'),
+        self.var(self.tree, 'Flag_HBHENoiseFilter'                   , type=int, storageType='B'),
+        self.var(self.tree, 'Flag_HBHENoiseIsoFilter'                , type=int, storageType='B'),
+        self.var(self.tree, 'Flag_EcalDeadCellTriggerPrimitiveFilter', type=int, storageType='B'),
+        self.var(self.tree, 'Flag_BadPFMuonFilter'                   , type=int, storageType='B'),
+        self.var(self.tree, 'Flag_eeBadScFilter'                     , type=int, storageType='B'),
+        self.var(self.tree, 'passBadMuonFilter'                      , type=int, storageType='B'),
+        self.var(self.tree, 'passBadChargedHadronFilter'             , type=int, storageType='B'),
+
+        #self.var(self.tree, 'Flag_BadChargedCandidateFilter'         , type=int, storageType='B'),
+        #self.var(self.tree, 'Flag_ecalBadCalibFilter'                , type=int, storageType='B'),
+        #self.var(self.tree, 'ecalBadCalibReducedMINIAODFilter'       , type=int, storageType='B'),
+
         ## Resonances (see PiKMassAnalyzer)
         self.list_of_mass_hypothesis = []
         ## build the mass hypothesis combinations accoridng to PiKMassAnalyzer definitions
@@ -254,15 +269,19 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
     
         ## MET filter information
         if event.input.eventAuxiliary().isRealData():
-            self.fill(self.tree, 'Flag_goodVertices'                      , event.Flag_goodVertices                      )
-            self.fill(self.tree, 'Flag_globalSuperTightHalo2016Filter'    , event.Flag_globalSuperTightHalo2016Filter    )
-            self.fill(self.tree, 'Flag_HBHENoiseFilter'                   , event.Flag_HBHENoiseFilter                   )
-            self.fill(self.tree, 'Flag_HBHENoiseIsoFilter'                , event.Flag_HBHENoiseIsoFilter                )
-            self.fill(self.tree, 'Flag_EcalDeadCellTriggerPrimitiveFilter', event.Flag_EcalDeadCellTriggerPrimitiveFilter)
-            self.fill(self.tree, 'Flag_BadPFMuonFilter'                   , event.Flag_BadPFMuonFilter                   )
-            self.fill(self.tree, 'Flag_BadChargedCandidateFilter'         , event.Flag_BadChargedCandidateFilter         )
-            self.fill(self.tree, 'Flag_eeBadScFilter'                     , event.Flag_eeBadScFilter                     )
-            self.fill(self.tree, 'Flag_ecalBadCalibFilter'                , event.Flag_ecalBadCalibFilter                )
+            self.fill(self.tree, 'Flag_goodVertices'                      , event.Flag_goodVertices                      ),
+            self.fill(self.tree, 'Flag_globalSuperTightHalo2016Filter'    , event.Flag_globalSuperTightHalo2016Filter    ),
+            self.fill(self.tree, 'Flag_HBHENoiseFilter'                   , event.Flag_HBHENoiseFilter                   ),
+            self.fill(self.tree, 'Flag_HBHENoiseIsoFilter'                , event.Flag_HBHENoiseIsoFilter                ),
+            self.fill(self.tree, 'Flag_EcalDeadCellTriggerPrimitiveFilter', event.Flag_EcalDeadCellTriggerPrimitiveFilter),
+            self.fill(self.tree, 'Flag_BadPFMuonFilter'                   , event.Flag_BadPFMuonFilter                   ),
+            self.fill(self.tree, 'Flag_eeBadScFilter'                     , event.Flag_eeBadScFilter                     ),
+            self.fill(self.tree, 'passBadMuonFilter'                      , event.passBadMuonFilter                      ),
+            self.fill(self.tree, 'passBadChargedHadronFilter'             , event.passBadChargedHadronFilter             ),
+            #self.fill(self.tree, 'Flag_BadChargedCandidateFilter'         , ev.Flag_BadChargedCandidateFilter        ),
+            #self.fill(self.tree, 'Flag_ecalBadCalibFilter'                , ev.Flag_ecalBadCalibFilter               ),
+            #self.fill(self.tree, 'ecalBadCalibReducedMINIAODFilter'       , ev.ecalBadCalibReducedMINIAODFilter      ),
+    
 
         # BDT output
         if hasattr(event, 'bdt_proba'):

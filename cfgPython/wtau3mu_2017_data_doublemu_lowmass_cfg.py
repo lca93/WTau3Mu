@@ -46,7 +46,7 @@ puFileMC   = puFileData ## to be produced
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , True )
+production         = getHeppyOption('production'        , False )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -144,6 +144,7 @@ treeProducer = cfg.Analyzer(
 )
 
 ## see https://github.com/vinzenzstampf/HNL/blob/master/cfg/hnl_3l_reco_data_prompt_e_cfg.py#L118-L133
+## twiki https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#2018_data
 metFilter = cfg.Analyzer(
     METFilter,
     name='METFilter',
@@ -155,9 +156,10 @@ metFilter = cfg.Analyzer(
         'Flag_HBHENoiseIsoFilter',
         'Flag_EcalDeadCellTriggerPrimitiveFilter',
         'Flag_BadPFMuonFilter',
-        'Flag_BadChargedCandidateFilter',
+        'Flag_BadChargedCandidateFilter',       ## marked as "not reccomanded, under review" on the twiki
         'Flag_eeBadScFilter',
-        'Flag_ecalBadCalibFilter',
+        'Flag_ecalBadCalibFilter',              ## NOTE: not listed on the twiki
+        'ecalBadCalibReducedMINIAODFilter',     ## NOTE: to be rerun on miniaod?, see twiki
     ]
 )
 

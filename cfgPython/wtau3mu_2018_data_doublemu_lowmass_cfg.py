@@ -144,6 +144,7 @@ treeProducer = cfg.Analyzer(
 )
 
 ## see https://github.com/vinzenzstampf/HNL/blob/master/cfg/hnl_3l_reco_data_prompt_e_cfg.py#L118-L133
+## twiki https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#2017_data
 metFilter = cfg.Analyzer(
     METFilter,
     name='METFilter',
@@ -155,9 +156,10 @@ metFilter = cfg.Analyzer(
         'Flag_HBHENoiseIsoFilter',
         'Flag_EcalDeadCellTriggerPrimitiveFilter',
         'Flag_BadPFMuonFilter',
-        'Flag_BadChargedCandidateFilter',
+        'Flag_BadChargedCandidateFilter',       ## marked as "not reccomanded, under review" on the twiki
         'Flag_eeBadScFilter',
-        'Flag_ecalBadCalibFilter',
+        'Flag_ecalBadCalibFilter',              ## NOTE: not listed on the twiki
+        'ecalBadCalibReducedMINIAODFilter',     ## NOTE: to be rerun on miniaod?, see twiki
     ]
 )
 
