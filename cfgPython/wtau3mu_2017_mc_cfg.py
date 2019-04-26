@@ -38,7 +38,7 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 
 
 # import samples, signal
-from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu
+from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu, WToTauTo3Mu_MG
 
 #puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
 #puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
