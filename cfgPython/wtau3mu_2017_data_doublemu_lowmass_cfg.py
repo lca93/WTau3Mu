@@ -38,8 +38,8 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 # import samples
 from CMGTools.WTau3Mu.samples.data_2017                             import datasamplesDoubleMuLowMass31Mar2018 as samples
 
-puFileData = '/afs/cern.ch/user/l/lguzzi/public/PUfiles_2017/pileup_WJetsToLNu.root'
-puFileMC   = puFileData ## to be produced
+puFileData = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
+puFileMC   = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
 
 ###################################################
 ###                   OPTIONS                   ###

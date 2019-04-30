@@ -43,8 +43,8 @@ from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu, WToTauTo3Mu_MG
 #puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
 #puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
 
-puFileData = '/afs/cern.ch/user/l/lguzzi/public/PUfiles_2017/pileup_WJetsToLNu.root'
-puFileMC   = puFileData ## to be produced
+puFileData = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
+puFileMC   = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
 
 ###################################################
 ###                   OPTIONS                   ###
