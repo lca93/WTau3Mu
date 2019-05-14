@@ -5,7 +5,7 @@ from PhysicsTools.HeppyCore.framework.heppy_loop import getHeppyOption
 from PhysicsTools.Heppy.utils.cmsswPreprocessor import CmsswPreprocessor
 from CMGTools.RootTools.utils.splitFactor import splitFactor
 
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 
 # import all analysers:
 # Heppy analyzers
