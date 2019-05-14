@@ -64,7 +64,8 @@ use_puppimet       = getHeppyOption('use_puppimet'      , True )
 samples = [WToTauTo3Mu]
 
 for sample in samples:
-    sample.triggers = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d' %i for i in range(1, 12)]
+    sample.triggers = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'  %i for i in range(1, 12)]
+    sample.triggers  = ['HLT_DoubleMu3_Trk_Tau3mu_v%d'          %i for i in range(1, 12)]
     # specify which muon should match to which filter. 
 #     sample.trigger_filters = [
 #         (lambda triplet : triplet.mu1(), ['hltTau3muTkVertexFilter']),
@@ -133,8 +134,9 @@ triggers_and_filters = OrderedDict()
 
 ## trigger matching to be implemented in Tau3MuAnalyzer for 2017 trigger
 #triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))
-triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']         = 'hltTau3MuPreFilter'
-triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1'] = 'hltTau3MuPreFilterCharge1'
+triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']           = (['hltTau3MuPreFilter'       ], Counter({84:1})) ## is it 84?
+triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1']   = (['hltTau3MuPreFilterCharge1'], Counter({84:1}))
+triggers_and_filters['HLT_DoubleMu3_Trk_Tau3mu']                    = (['hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter'], Counter({83:2, 91:1}))
 
 tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,

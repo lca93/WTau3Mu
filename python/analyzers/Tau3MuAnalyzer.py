@@ -204,51 +204,63 @@ class Tau3MuAnalyzer(Analyzer):
 
         # trigger matching
         if hasattr(self.cfg_ana, 'trigger_match') and len(self.cfg_ana.trigger_match.keys())>0:
-            ## re-init to False if we require the trigger matching
-            event.trigger_matched = False
-            ## match only if the one of the trigger of interest has been fired
-            if not any(trigger in fired_triggers for trigger, fired_triggers in product(self.cfg_ana.trigger_match.keys(), event.fired_triggers)):
-                return False
-
+            event.matched_triggers  = {}
+            event.best_triplet      = {}
+            event.best_tau          = {}
             for triplet in seltau3mu:
-                muons = (triplet.mu1(), triplet.mu2(), triplet.mu3())
-                triplet.hltmatched = []
+                muons = [triplet.mu1(), triplet.mu2(), triplet.mu3()]
+                tau   = muons[0].p4() + muons[1].p4() + muons[2].p4()
 
                 ## 2017: match only the tau
                 for info in event.trigger_infos:
+                    ## init the trigger matching
+                    trigger_name    = '_'.join(info.name.split('_')[:-1])
+                    trigger_filters = self.cfg_ana.trigger_match[trigger_name][0]
 
-                    mykey = '_'.join(info.name.split('_')[:-1])
+                    if not trigger_name in self.cfg_ana.trigger_match.keys(): continue
 
-                    p4_1 = ROOT.TLorentzVector()
-                    p4_2 = ROOT.TLorentzVector()
-                    p4_3 = ROOT.TLorentzVector()
+                    ## can different versions overlap?
+                    event.matched_triggers[trigger_name] = False if not trigger_name in event.matched_triggers else event.matched_triggers[trigger_name]
 
-                    p4_1.SetPtEtaPhiM(muons[0].pt(), muons[0].eta(), muons[0].phi(), 0.10565999895334244)                        
-                    p4_2.SetPtEtaPhiM(muons[1].pt(), muons[1].eta(), muons[1].phi(), 0.10565999895334244)
-                    p4_3.SetPtEtaPhiM(muons[2].pt(), muons[2].eta(), muons[2].phi(), 0.10565999895334244)
-
-                    p4_t = p4_1 + p4_2 + p4_3
-
-                    ## create a list of matching objects which satisfies the last HLT filter label
-                    trigger_name_no_version = '_'.join(info.name.split('_')[:-1])
-                    tau_filter   = self.cfg_ana.trigger_match[trigger_name_no_version]
+                    ## match woth dR if the object filter is in the filters of interest
+                    mu1_trigger_objs = sorted([obj for obj in info.objects if deltaR(muons[0], obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, muons[0]))
+                    mu2_trigger_objs = sorted([obj for obj in info.objects if deltaR(muons[1], obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, muons[1]))
+                    mu3_trigger_objs = sorted([obj for obj in info.objects if deltaR(muons[2], obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, muons[2]))
+                    tau_trigger_objs = sorted([obj for obj in info.objects if deltaR(tau     , obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, tau     ))
                     
-                    matched_to_tau = [obj for obj in info.objects   if deltaR(p4_t.Eta(), p4_t.Phi(), obj.eta(), obj.phi()) < 0.25]
-                    matched_to_tau = [obj for obj in matched_to_tau if tau_filter in obj.filterLabels()]
-                    matched_to_tau = sorted(matched_to_tau, key = lambda obj: deltaR(p4_t.Eta(), p4_t.Phi(), obj.eta(), obj.phi()))
+                    trigger_types_to_match = self.cfg_ana.trigger_match[trigger_name][1]
+                    ## build all the possible combinations of three muons
+                    hlt_matches  = [tt for tt in [mu1_trigger_objs, mu2_trigger_objs, mu3_trigger_objs] if len(tt) > 0]
+                    hlt_triplets = [tt for tt in product(*hlt_matches) if len(set(tt)) >= len(self.cfg_ana.trigger_match[trigger_name][0])]
+                    ## the selected triplets must match the trigger types of interest
+                    hlt_triplets = [tt for tt in hlt_triplets if Counter([mu.triggerObjectTypes()[0] for mu in tt]) == trigger_types_to_match]
+                    ## cut on the hlt triplet mass around the tau mass
+                    hlt_triplets = [tt for tt in hlt_triplets if self.tauMass(tt) < 2.02 and self.tauMass(tt) > 1.6]
+                    ## sort the hlt triplet candidates based on the distance from the offline triplet
+                    hlt_triplets.sort(key = lambda x: sum([deltaR(x[jj], muons[jj]) for jj in range(3)]), reverse = False)
 
-                    if len(matched_to_tau) > 0:
-                        triplet.hltmatched = matched_to_tau
-                        triplet.p4_tau = p4_t 
+                    event.best_triplet[trigger_name] = hlt_triplets[0]      if len(hlt_triplets)     > 0 else None
+                    event.best_tau    [trigger_name] = tau_trigger_objs[0]  if len(tau_trigger_objs) > 0 else None
 
-            seltau3mu = [triplet for triplet in seltau3mu if len(triplet.hltmatched)>0]
+                    if trigger_name == 'HLT_DoubleMu3_Trk_Tau3mu':
+                        if event.best_triplet is not None:
+                            event.matched_triggers[trigger_name] = True
+                    else:
+                        if event.best_tau is not None:
+                            event.matched_triggers[trigger_name] = True
+
+                for kk in event.matched_triggers.keys():
+                    ## ignore 2016 trigger
+                    if kk != 'HLT_DoubleMu3_Trk_Tau3mu':
+                        continue
+                    triplet.trigger_matched = event.matched_triggers[kk] or getattr(triplet, 'trigger_matched', False)
+
+            seltau3mu = [triplet for triplet in seltau3mu if triplet.trigger_matched]
             
             if len(seltau3mu) == 0:
                 return False
                 
-            event.trigger_matched = True
-            self.counters.counter('Tau3Mu').inc('trigger matched')
-
+        self.counters.counter('Tau3Mu').inc('trigger matched')
         event.seltau3mu = seltau3mu
         event.tau3mu = self.bestTriplet(event.seltau3mu)
 
