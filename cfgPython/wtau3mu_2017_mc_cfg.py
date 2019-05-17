@@ -64,8 +64,8 @@ use_puppimet       = getHeppyOption('use_puppimet'      , True )
 samples = [WToTauTo3Mu]
 
 for sample in samples:
-    sample.triggers = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'  %i for i in range(1, 12)]
-    sample.triggers  = ['HLT_DoubleMu3_Trk_Tau3mu_v%d'          %i for i in range(1, 12)]
+    sample.triggers  = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'  %i for i in range(1, 12)]
+    sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'           %i for i in range(1, 12)]
     # specify which muon should match to which filter. 
 #     sample.trigger_filters = [
 #         (lambda triplet : triplet.mu1(), ['hltTau3muTkVertexFilter']),
@@ -106,7 +106,7 @@ triggerAna = cfg.Analyzer(
     TriggerAnalyzer,
     name='TriggerAnalyzer',
     addTriggerObjects=True,
-    requireTrigger=True,
+    requireTrigger=False,
     unpackLabels=True,
     usePrescaled=False,
     triggerObjectsHandle =  ('slimmedPatTrigger', '', 'PAT'),

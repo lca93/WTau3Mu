@@ -15,6 +15,8 @@ from CMGTools.WTau3Mu.physicsobjects.Tau3MuMET    import Tau3MuMET
 from CMGTools.WTau3Mu.analyzers.resonances        import resonances, sigmas_to_exclude
 from pdb import set_trace
 
+muon_mass = 0.10565999895334244
+
 class Tau3MuAnalyzer(Analyzer):
     '''
     '''
@@ -127,6 +129,18 @@ class Tau3MuAnalyzer(Analyzer):
                 self.testTauVertex(tau)]
         return map(Tau, taus)
     
+    def tauMass(self, triplet):
+        global muon_mass
+        p4_1 = ROOT.TLorentzVector()
+        p4_2 = ROOT.TLorentzVector()
+        p4_3 = ROOT.TLorentzVector()
+
+        p4_1.SetPtEtaPhiM(triplet[0].pt(), triplet[0].eta(), triplet[0].phi(), muon_mass)                        
+        p4_2.SetPtEtaPhiM(triplet[1].pt(), triplet[1].eta(), triplet[1].phi(), muon_mass)
+        p4_3.SetPtEtaPhiM(triplet[2].pt(), triplet[2].eta(), triplet[2].phi(), muon_mass)
+
+        return (p4_1 + p4_2 + p4_3).M()
+    
     def process(self, event):
         self.readCollections(event.input)
 
@@ -151,6 +165,9 @@ class Tau3MuAnalyzer(Analyzer):
         return good
 
     def selectionSequence(self, event):
+        ## TODO: apply filter matching
+        ## TODO: update so that it can use also muons couples or signlets
+        ## TODO: add 2016 trigger to triggeranalyzer
         self.counters.counter('Tau3Mu').inc('all events')
 
         if len(event.muons) < 3:
