@@ -167,7 +167,6 @@ class Tau3MuAnalyzer(Analyzer):
     def selectionSequence(self, event):
         ## TODO: apply filter matching
         ## TODO: update so that it can use also muons couples or signlets
-        ## TODO: add 2016 trigger to triggeranalyzer
         self.counters.counter('Tau3Mu').inc('all events')
 
         if len(event.muons) < 3:
@@ -221,10 +220,13 @@ class Tau3MuAnalyzer(Analyzer):
 
         # trigger matching
         if hasattr(self.cfg_ana, 'trigger_match') and len(self.cfg_ana.trigger_match.keys())>0:
-            event.matched_triggers  = {}
-            event.best_triplet      = {}
-            event.best_tau          = {}
             for triplet in seltau3mu:
+                triplet.matched_triggers  = {}
+                triplet.matched_muons     = {}
+                triplet.matched_tau       = {}
+                triplet.best_triplet      = {}
+                triplet.best_tau          = {}
+
                 muons = [triplet.mu1(), triplet.mu2(), triplet.mu3()]
                 tau   = muons[0].p4() + muons[1].p4() + muons[2].p4()
 
@@ -233,52 +235,83 @@ class Tau3MuAnalyzer(Analyzer):
                     ## init the trigger matching
                     trigger_name    = '_'.join(info.name.split('_')[:-1])
                     trigger_filters = self.cfg_ana.trigger_match[trigger_name][0]
+                    if not trigger_name in triplet.matched_muons.keys() : triplet.matched_muons[trigger_name] = [None, None, None]
+                    if not trigger_name in triplet.matched_tau.keys()   : triplet.matched_tau[trigger_name]   = None 
 
                     if not trigger_name in self.cfg_ana.trigger_match.keys(): continue
 
                     ## can different versions overlap?
-                    event.matched_triggers[trigger_name] = False if not trigger_name in event.matched_triggers else event.matched_triggers[trigger_name]
+                    triplet.matched_triggers[trigger_name] = False if not trigger_name in triplet.matched_triggers else triplet.matched_triggers[trigger_name]
 
                     ## match woth dR if the object filter is in the filters of interest
                     mu1_trigger_objs = sorted([obj for obj in info.objects if deltaR(muons[0], obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, muons[0]))
                     mu2_trigger_objs = sorted([obj for obj in info.objects if deltaR(muons[1], obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, muons[1]))
                     mu3_trigger_objs = sorted([obj for obj in info.objects if deltaR(muons[2], obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, muons[2]))
-                    tau_trigger_objs = sorted([obj for obj in info.objects if deltaR(tau     , obj) < 0.05 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, tau     ))
+                    tau_trigger_objs = sorted([obj for obj in info.objects if deltaR(tau     , obj) < 0.15 and any(obj.filter(flt) for flt in trigger_filters)], key = lambda x: deltaR(x, tau     ))
                     
                     trigger_types_to_match = self.cfg_ana.trigger_match[trigger_name][1]
                     ## build all the possible combinations of three muons
                     hlt_matches  = [tt for tt in [mu1_trigger_objs, mu2_trigger_objs, mu3_trigger_objs] if len(tt) > 0]
                     hlt_triplets = [tt for tt in product(*hlt_matches) if len(set(tt)) >= len(self.cfg_ana.trigger_match[trigger_name][0])]
                     ## the selected triplets must match the trigger types of interest
-                    hlt_triplets = [tt for tt in hlt_triplets if Counter([mu.triggerObjectTypes()[0] for mu in tt]) == trigger_types_to_match]
+                    hlt_triplets = [tt for tt in hlt_triplets if Counter([mu.triggerObjectTypes()[0] for mu in tt]) & trigger_types_to_match == trigger_types_to_match]
                     ## cut on the hlt triplet mass around the tau mass
                     hlt_triplets = [tt for tt in hlt_triplets if self.tauMass(tt) < 2.02 and self.tauMass(tt) > 1.6]
                     ## sort the hlt triplet candidates based on the distance from the offline triplet
                     hlt_triplets.sort(key = lambda x: sum([deltaR(x[jj], muons[jj]) for jj in range(3)]), reverse = False)
 
-                    event.best_triplet[trigger_name] = hlt_triplets[0]      if len(hlt_triplets)     > 0 else None
-                    event.best_tau    [trigger_name] = tau_trigger_objs[0]  if len(tau_trigger_objs) > 0 else None
+                    triplet.best_triplet[trigger_name] = hlt_triplets[0]      if len(hlt_triplets)     > 0 else None
+                    triplet.best_tau    [trigger_name] = tau_trigger_objs[0]  if len(tau_trigger_objs) > 0 else None
 
                     if trigger_name == 'HLT_DoubleMu3_Trk_Tau3mu':
-                        if event.best_triplet is not None:
-                            event.matched_triggers[trigger_name] = True
+                        if not triplet.best_triplet[trigger_name] is None:
+                            triplet.matched_muons[trigger_name][0] = mu1_trigger_objs[0]
+                            triplet.matched_muons[trigger_name][1] = mu2_trigger_objs[0]
+                            triplet.matched_muons[trigger_name][2] = mu3_trigger_objs[0]
+                            triplet.matched_triggers[trigger_name] = True
                     else:
-                        if event.best_tau is not None:
-                            event.matched_triggers[trigger_name] = True
-
-                for kk in event.matched_triggers.keys():
-                    ## ignore 2016 trigger
-                    if kk != 'HLT_DoubleMu3_Trk_Tau3mu':
+                        if not triplet.best_tau[trigger_name] is None:
+                            triplet.matched_tau[trigger_name] = tau_trigger_objs[0]
+                            triplet.matched_triggers[trigger_name] = True
+                
+                # iterate over the path:filters dictionary
+                #     the filters MUST be sorted correctly: i.e. first filter in the dictionary 
+                #     goes with the first muons and so on
+                triplet.good_match = False
+                for k, vv in self.cfg_ana.trigger_match.iteritems():
+                    if k != 'HLT_DoubleMu3_Trk_Tau3mu':
                         continue
-                    triplet.trigger_matched = event.matched_triggers[kk] or getattr(triplet, 'trigger_matched', False)
+                    ismatched = 0
+                    if not any(k in name for name in event.fired_triggers):
+                        continue
+                    
+                    v = vv[0]
+                                                                 
+                    for ii, filters in enumerate(v):
+                        if not triplet.matched_muons[k][ii]:
+                            continue
+                        if set([filters]) & set(triplet.matched_muons[k][ii].filterLabels()):
+                            ismatched += 1                      
+                                
+                    if len(v) != ismatched:
+                        triplet.matched_triggers[k] = False
+
+                for kk in triplet.matched_triggers.keys():
+                    ## ignore 2016 trigger
+                    if kk == 'HLT_DoubleMu3_Trk_Tau3mu':
+                        continue
+                    else:
+                        triplet.trigger_matched = triplet.matched_triggers[kk] or getattr(triplet, 'trigger_matched', False)
 
             seltau3mu = [triplet for triplet in seltau3mu if triplet.trigger_matched]
             
             if len(seltau3mu) == 0:
                 return False
+
+            else:
+                self.counters.counter('Tau3Mu').inc('trigger matched')
+                event.seltau3mu = seltau3mu
                 
-        self.counters.counter('Tau3Mu').inc('trigger matched')
-        event.seltau3mu = seltau3mu
         event.tau3mu = self.bestTriplet(event.seltau3mu)
 
         return True

@@ -83,6 +83,11 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         for ll in self.list_of_mass_hypothesis:
                 self.var(self.tree, ll)
 
+        for tt in self.cfg_comp.triggers:
+            tt = '_'.join(tt.split('_')[:-1])
+            self.var(self.tree, tt, type=int, storageType='B')
+
+
         # trigger information
         if hasattr(self.cfg_ana, 'fillL1') and self.cfg_ana.fillL1:
             self.bookL1object(self.tree, 'mu1_L1')
@@ -307,6 +312,10 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         ## fill resonances infos (see booking of variables)
         for ll in self.list_of_mass_hypothesis:
             self.fill(self.tree, ll, getattr(event, ll, -99))
+        
+        ## trigger information
+        for tt in event.tau3mu.matched_triggers.keys():
+            self.fill(self.tree, tt, event.tau3mu.matched_triggers[tt])
 
         # weights
         self.fill(self.tree, 'mu1_id_sf'   , getattr(event.tau3mu.mu1(), 'idweight'      , 1.))

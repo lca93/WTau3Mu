@@ -143,6 +143,7 @@ tau3MuAna = cfg.Analyzer(
     name='Tau3MuAnalyzer',
     trigger_match = triggers_and_filters,
     useMVAmet   = use_mvamet  ,
+    requireTriggerMatch = True,
     usePUPPImet = use_puppimet,
 )
 
