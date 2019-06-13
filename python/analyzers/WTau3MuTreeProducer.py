@@ -82,9 +82,9 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         self.list_of_mass_hypothesis = list(set(self.list_of_mass_hypothesis))
         for ll in self.list_of_mass_hypothesis:
                 self.var(self.tree, ll)
-
-        for tt in self.cfg_comp.triggers:
-            tt = '_'.join(tt.split('_')[:-1])
+        
+        self.hlt_triggers = ['_'.join(tt.split('_')[:-1]) for tt in self.cfg_comp.triggers]
+        for tt in self.hlt_triggers:
             self.var(self.tree, tt, type=int, storageType='B')
 
 
@@ -314,8 +314,9 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
             self.fill(self.tree, ll, getattr(event, ll, -99))
         
         ## trigger information
-        for tt in event.tau3mu.matched_triggers.keys():
-            self.fill(self.tree, tt, event.tau3mu.matched_triggers[tt])
+        for tt in self.hlt_triggers:
+            self.fill(self.tree, tt, event.tau3mu.matched_triggers[tt]) if tt in event.tau3mu.matched_triggers.keys() else \
+            self.fill(self.tree, tt, False) 
 
         # weights
         self.fill(self.tree, 'mu1_id_sf'   , getattr(event.tau3mu.mu1(), 'idweight'      , 1.))

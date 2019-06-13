@@ -277,7 +277,6 @@ class Tau3MuAnalyzer(Analyzer):
                 # iterate over the path:filters dictionary
                 #     the filters MUST be sorted correctly: i.e. first filter in the dictionary 
                 #     goes with the first muons and so on
-                triplet.good_match = False
                 for k, vv in self.cfg_ana.trigger_match.iteritems():
                     if k != 'HLT_DoubleMu3_Trk_Tau3mu':
                         continue
