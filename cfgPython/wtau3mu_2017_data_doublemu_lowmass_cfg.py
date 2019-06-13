@@ -38,15 +38,15 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 # import samples
 from CMGTools.WTau3Mu.samples.data_2017                             import datasamplesDoubleMuLowMass31Mar2018 as samples
 
-puFileData = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
-puFileMC   = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
+puFileData = '/gwpool/users/lguzzi/WTau3Mu/2018/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
+puFileMC   = '/gwpool/users/lguzzi/WTau3Mu/2018/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
 
 ###################################################
 ###                   OPTIONS                   ###
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , False)
+production         = getHeppyOption('production'        , True )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
