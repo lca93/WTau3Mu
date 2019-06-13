@@ -38,20 +38,20 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 
 
 # import samples, signal
-from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu, WToTauTo3Mu_MG
+from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu
 
 #puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
 #puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
 
-puFileData = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
-puFileMC   = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
+puFileData = '/gwpool/users/lguzzi/WTau3Mu/2018/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
+puFileMC   = '/gwpool/users/lguzzi/WTau3Mu/2018/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
 
 ###################################################
 ###                   OPTIONS                   ###
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , False)
+production         = getHeppyOption('production'        , True )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -72,9 +72,10 @@ for sample in samples:
 #         (lambda triplet : triplet.mu2(), ['hltTau3muTkVertexFilter']),
 #         (lambda triplet : triplet.mu3(), ['hltTau3muTkVertexFilter']),
 #     ]
-    sample.splitFactor = splitFactor(sample, 1e5)
-    sample.puFileData = puFileData
-    sample.puFileMC   = puFileMC
+    sample.dataset_entries = sample.nGenEvents
+    sample.splitFactor     = splitFactor(sample, 1e4)
+    sample.puFileData      = puFileData
+    sample.puFileMC        = puFileMC
 
 selectedComponents = samples
 
@@ -355,7 +356,7 @@ if not production:
     selectedComponents   = [comp]
     comp.splitFactor     = 1
     comp.fineSplitFactor = 1
-#     comp.files           = comp.files[:1]
+    comp.files           = comp.files[:10]
 #     comp.files = [
 #       'file:/afs/cern.ch/work/m/manzoni/tauHLT/2017/CMSSW_9_1_0_pre3/src/Tau3Mu/outputFULL.root',
 #       # 'root://xrootd.unl.edu//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v1/000/272/760/00000/68B88794-7015-E611-8A92-02163E01366C.root',
