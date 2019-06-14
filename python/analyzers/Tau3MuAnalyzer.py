@@ -302,7 +302,7 @@ class Tau3MuAnalyzer(Analyzer):
                     else:
                         triplet.trigger_matched = triplet.matched_triggers[kk] or getattr(triplet, 'trigger_matched', False)
 
-            seltau3mu = [triplet for triplet in seltau3mu if triplet.trigger_matched]
+            seltau3mu = [triplet for triplet in seltau3mu if getattr(triplet, 'trigger_matched', False)]
             
             if len(seltau3mu) == 0:
                 return False
