@@ -38,8 +38,8 @@ from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import Recoi
 # import samples
 from CMGTools.WTau3Mu.samples.data_2018                             import datasamplesDoubleMuLowMass_17Sep2018 as samples
 
-puFileData = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/Data_PU_2018_PromptRecoJson.root'
-puFileMC   = '/eos/user/l/lguzzi/WTau3Mu/PU_histos/MC_PU_2018_miniAOD_WTau3Mu.root'
+puFileData = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
+puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
 
 ###################################################
 ###                   OPTIONS                   ###
