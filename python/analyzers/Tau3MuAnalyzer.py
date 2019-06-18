@@ -309,7 +309,8 @@ class Tau3MuAnalyzer(Analyzer):
 
             else:
                 self.counters.counter('Tau3Mu').inc('trigger matched')
-                event.seltau3mu = seltau3mu
+        
+        event.seltau3mu = seltau3mu
                 
         event.tau3mu = self.bestTriplet(event.seltau3mu)
 
