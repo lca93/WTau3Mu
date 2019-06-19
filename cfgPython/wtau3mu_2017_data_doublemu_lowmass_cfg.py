@@ -46,7 +46,7 @@ puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_mini
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , True )
+production         = getHeppyOption('production'        , False  )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -136,6 +136,7 @@ tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
     name='Tau3MuAnalyzer',
     trigger_match = triggers_and_filters,
+    spectators  = ['HLT_DoubleMu3_Trk_Tau3mu'],
     useMVAmet   = use_mvamet  ,
     usePUPPImet = use_puppimet,
 )

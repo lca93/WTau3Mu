@@ -133,6 +133,7 @@ tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
     name='Tau3MuAnalyzer',
     trigger_match = triggers_and_filters,
+    spectators  = ['HLT_DoubleMu3_Trk_Tau3mu'],
     useMVAmet   = use_mvamet  ,
     usePUPPImet = use_puppimet,
 )

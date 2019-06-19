@@ -297,7 +297,7 @@ class Tau3MuAnalyzer(Analyzer):
 
                 for kk in triplet.matched_triggers.keys():
                     ## ignore 2016 trigger
-                    if kk == 'HLT_DoubleMu3_Trk_Tau3mu':
+                    if kk in getattr(self.cfg_ana, 'spectators', []):
                         continue
                     else:
                         triplet.trigger_matched = triplet.matched_triggers[kk] or getattr(triplet, 'trigger_matched', False)
