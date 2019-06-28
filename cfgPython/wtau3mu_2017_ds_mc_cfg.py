@@ -43,15 +43,16 @@ from CMGTools.WTau3Mu.samples.ds_mc_2017 import DsTau3Mu
 #puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
 #puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
 
-## to be changed
-puFileMC   = '/gwpool/users/lguzzi/WTau3Mu/PUHisto/MC_PU_2017_miniAOD_WTau3Mu.root'
-puFileData = puFileMC
+
+puFileData = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
+puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
+
 ###################################################
 ###                   OPTIONS                   ###
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , True )
+production         = getHeppyOption('production'        , False)
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -64,8 +65,8 @@ use_puppimet       = getHeppyOption('use_puppimet'      , True )
 samples = [DsTau3Mu]
 
 for sample in samples:
-    sample.triggers  = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'  %i for i in range(1, 12)]
-    sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'           %i for i in range(1, 12)]
+    sample.triggers  = ['HLT_DoubleMu3_TkMu_DsTau3Mu%d'  %i for i in range(1, 12)]
+    sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'   %i for i in range(1, 12)]
     # specify which muon should match to which filter. 
 #     sample.trigger_filters = [
 #         (lambda triplet : triplet.mu1(), ['hltTau3muTkVertexFilter']),
@@ -135,9 +136,10 @@ triggers_and_filters = OrderedDict()
 
 ## trigger matching to be implemented in Tau3MuAnalyzer for 2017 trigger
 #triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))
-triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']           = (['hltTau3MuPreFilter'       ], Counter({84:1})) ## is it 84?
-triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1']   = (['hltTau3MuPreFilterCharge1'], Counter({84:1}))
-triggers_and_filters['HLT_DoubleMu3_Trk_Tau3mu']                    = (['hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter'], Counter({83:2, 91:1}))
+#triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']           = (['hltTau3MuPreFilter'       ], Counter({84:1})) ## is it 84?
+#triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1']   = (['hltTau3MuPreFilterCharge1'], Counter({84:1}))
+triggers_and_filters['HLT_DoubleMu3_TkMu_DsTau3Mu']     = (['hltdstau3muDisplaced3muFltr', 'hltdstau3muDisplaced3muFltr', 'hltdstau3muDisplaced3muFltr'], Counter({83:3}))
+triggers_and_filters['HLT_DoubleMu3_Trk_Tau3mu']        = (['hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter'], Counter({83:2, 91:1}))
 
 tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
@@ -353,7 +355,7 @@ if pick_events:
 ###            SET BATCH OR LOCAL               ###
 ###################################################
 if not production:
-    comp                 = WToTauTo3Mu
+    comp                 = DsTau3Mu
     selectedComponents   = [comp]
     comp.splitFactor     = 1
     comp.fineSplitFactor = 1
