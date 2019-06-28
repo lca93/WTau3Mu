@@ -305,7 +305,10 @@ class Tau3MuAnalyzer(Analyzer):
             seltau3mu = [triplet for triplet in seltau3mu if getattr(triplet, 'trigger_matched', False)]
             
             if len(seltau3mu) == 0:
-                return False
+                if getattr(self.cfg_ana, 'requireTriggerMatch', True): 
+                    return False
+                else:
+                    seltau3mu = seltau3mu_tmp
 
             else:
                 self.counters.counter('Tau3Mu').inc('trigger matched')

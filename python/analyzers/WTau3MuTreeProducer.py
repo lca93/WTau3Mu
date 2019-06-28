@@ -85,7 +85,8 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         
         self.hlt_triggers = ['_'.join(tt.split('_')[:-1]) for tt in self.cfg_comp.triggers]
         for tt in self.hlt_triggers:
-            self.var(self.tree, tt, type=int, storageType='B')
+            self.var(self.tree, tt + '_matched', type=int, storageType='B')
+            self.var(self.tree, tt + '_fired'  , type=int, storageType='B')
 
 
         # trigger information
@@ -316,9 +317,14 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         ## trigger information
         if hasattr(event.tau3mu, 'matched_triggers'):
             for tt in self.hlt_triggers:
-                self.fill(self.tree, tt, event.tau3mu.matched_triggers[tt]) if tt in event.tau3mu.matched_triggers.keys() else \
-                self.fill(self.tree, tt, False) 
-
+                self.fill(self.tree, tt + '_matched', event.tau3mu.matched_triggers[tt]) if tt in event.tau3mu.matched_triggers.keys() else \
+                self.fill(self.tree, tt + '_matched', False)
+        if hasattr(event.tau3mu, 'fired_triggers'):
+            fired_triggers_no_name = [ft..split('_')[:-1] for ft in event.fired_triggers]
+            for tt in self.hlt_triggers:
+                self.fill(self.tree, tt + '_fired', True ) if tt in fired_triggers_no_name else \
+                self.fill(self.tree, tt + '_fired', False) 
+        
         # weights
         self.fill(self.tree, 'mu1_id_sf'   , getattr(event.tau3mu.mu1(), 'idweight'      , 1.))
         self.fill(self.tree, 'mu2_id_sf'   , getattr(event.tau3mu.mu2(), 'idweight'      , 1.))
