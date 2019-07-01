@@ -83,7 +83,7 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         for ll in self.list_of_mass_hypothesis:
                 self.var(self.tree, ll)
         
-        self.hlt_triggers = ['_'.join(tt.split('_')[:-1]) for tt in self.cfg_comp.triggers]
+        self.hlt_triggers = set(['_'.join(tt.split('_')[:-1]) for tt in self.cfg_comp.triggers])
         for tt in self.hlt_triggers:
             self.var(self.tree, tt + '_matched', type=int, storageType='B')
             self.var(self.tree, tt + '_fired'  , type=int, storageType='B')
@@ -319,8 +319,8 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
             for tt in self.hlt_triggers:
                 self.fill(self.tree, tt + '_matched', event.tau3mu.matched_triggers[tt]) if tt in event.tau3mu.matched_triggers.keys() else \
                 self.fill(self.tree, tt + '_matched', False)
-        if hasattr(event.tau3mu, 'fired_triggers'):
-            fired_triggers_no_name = [ft..split('_')[:-1] for ft in event.fired_triggers]
+        if hasattr(event, 'fired_triggers'):
+            fired_triggers_no_name = set(['_'.join(ft.split('_')[:-1]) for ft in event.fired_triggers])
             for tt in self.hlt_triggers:
                 self.fill(self.tree, tt + '_fired', True ) if tt in fired_triggers_no_name else \
                 self.fill(self.tree, tt + '_fired', False) 

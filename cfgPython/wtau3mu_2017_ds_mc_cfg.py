@@ -24,7 +24,7 @@ from CMGTools.H2TauTau.proto.analyzers.JetAnalyzer                  import JetAn
 
 #WTau3Mu analysers
 from CMGTools.WTau3Mu.analyzers.Tau3MuAnalyzer                      import Tau3MuAnalyzer
-from CMGTools.WTau3Mu .analyzers.TriggerAnalyzer                    import TriggerAnalyzer
+from CMGTools.WTau3Mu.analyzers.TriggerAnalyzer                     import TriggerAnalyzer
 from CMGTools.WTau3Mu.analyzers.WTau3MuTreeProducer                 import WTau3MuTreeProducer
 from CMGTools.WTau3Mu.analyzers.Tau3MuKalmanVertexFitterAnalyzer    import Tau3MuKalmanVertexFitterAnalyzer
 from CMGTools.WTau3Mu.analyzers.Tau3MuKinematicVertexFitterAnalyzer import Tau3MuKinematicVertexFitterAnalyzer
@@ -52,7 +52,7 @@ puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_mini
 ###################################################
 # Get all heppy options; set via "-o production" or "-o production=True"
 # production = True run on batch, production = False (or unset) run locally
-production         = getHeppyOption('production'        , False)
+production         = getHeppyOption('production'        , False )
 pick_events        = getHeppyOption('pick_events'       , False)
 kin_vtx_fitter     = getHeppyOption('kin_vtx_fitter'    , True )
 extrap_muons_to_L1 = getHeppyOption('extrap_muons_to_L1', False)
@@ -65,8 +65,8 @@ use_puppimet       = getHeppyOption('use_puppimet'      , True )
 samples = [DsTau3Mu]
 
 for sample in samples:
-    sample.triggers  = ['HLT_DoubleMu3_TkMu_DsTau3Mu%d'  %i for i in range(1, 12)]
-    sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'   %i for i in range(1, 12)]
+    sample.triggers  = ['HLT_DoubleMu3_TkMu_DsTau3Mu_v%d'  %i for i in range(1, 12)]
+    sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'     %i for i in range(1, 12)]
     # specify which muon should match to which filter. 
 #     sample.trigger_filters = [
 #         (lambda triplet : triplet.mu1(), ['hltTau3muTkVertexFilter']),
@@ -145,9 +145,9 @@ tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
     name='Tau3MuAnalyzer',
     trigger_match = triggers_and_filters,
-    spectators  = ['HLT_DoubleMu3_Trk_Tau3mu'],
+    #spectators  = ['HLT_DoubleMu3_Trk_Tau3mu'],
     useMVAmet   = use_mvamet  ,
-    requireTriggerMatch = True,
+    requireTriggerMatch = False,
     usePUPPImet = use_puppimet,
 )
 
@@ -357,7 +357,7 @@ if pick_events:
 if not production:
     comp                 = DsTau3Mu
     selectedComponents   = [comp]
-    comp.splitFactor     = 1
+    comp.splitFactor     = 5
     comp.fineSplitFactor = 1
     comp.files           = comp.files[:10]
 #     comp.files = [
