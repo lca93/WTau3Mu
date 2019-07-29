@@ -1,5 +1,5 @@
 from PhysicsTools.Heppy.analyzers.core.TreeAnalyzerNumpy import TreeAnalyzerNumpy
-from CMGTools.WTau3Mu.analyzers.TreeVariables import event_vars, triplet_vars, vertex_vars, particle_vars, lepton_vars, electron_vars, muon_vars, tau_vars, tau_vars_extra, jet_vars, jet_vars_extra, geninfo_vars, l1obj_vars
+from CMGTools.WTau3Mu.analyzers.TreeVariables import event_vars, triplet_vars, vertex_vars, particle_vars, lepton_vars, electron_vars, muon_vars, muon_extra_vars, tau_vars, tau_vars_extra, jet_vars, jet_vars_extra, geninfo_vars, l1obj_vars
 from CMGTools.H2TauTau.proto.physicsobjects.DiObject import DiTau
 
 class WTau3MuTreeProducerBase(TreeAnalyzerNumpy):
@@ -129,11 +129,11 @@ class WTau3MuTreeProducerBase(TreeAnalyzerNumpy):
     # muon
     def bookMuon(self, tree, p_name):
         self.bookLepton(tree, p_name)
-        self.bookGeneric(tree, muon_vars, p_name)
+        self.bookGeneric(tree, muon_vars + muon_extra_vars, p_name)
 
     def fillMuon(self, tree, p_name, muon):
         self.fillLepton(tree, p_name, muon)
-        self.fillGeneric(tree, muon_vars, muon, p_name)
+        self.fillGeneric(tree, muon_vars + muon_extra_vars, muon, p_name)
 
     # ele
     def bookEle(self, tree, p_name):

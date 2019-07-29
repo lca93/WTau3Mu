@@ -130,7 +130,8 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
 
         self.var(self.tree, 'trk_hlt_sf'  )
         self.var(self.tree, 'trk_hlt_sf_e')
-        
+        self.var(self.tree, 'dphi3d')
+
     def process(self, event):
         '''
         '''
@@ -325,6 +326,15 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
                 self.fill(self.tree, tt + '_fired', True ) if tt in fired_triggers_no_name else \
                 self.fill(self.tree, tt + '_fired', False) 
         
+        ## some additional BDT variables
+        ##      angle between PV-SV and p(tau)
+        pv = ROOT.TVector3(event.vertices[0].x(), event.vertices[0].y(), event.vertices[0].z())
+        sv = ROOT.TVector3(event.tau3muRefit.refittedVertex.x(), event.tau3muRefit.refittedVertex.y(), event.tau3muRefit.refittedVertex.z())
+        seg  = sv - pv
+        ptau = ROOT.TVector3(event.tau3muRefit.p4().px(), event.tau3muRefit.p4().py(), event.tau3muRefit.p4().pz())
+        dphi_3d = seg.Angle(ptau)
+        self.fill(self.tree, 'dphi3d', dphi_3d)
+
         # weights
         self.fill(self.tree, 'mu1_id_sf'   , getattr(event.tau3mu.mu1(), 'idweight'      , 1.))
         self.fill(self.tree, 'mu2_id_sf'   , getattr(event.tau3mu.mu2(), 'idweight'      , 1.))

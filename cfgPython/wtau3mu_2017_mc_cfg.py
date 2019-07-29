@@ -33,7 +33,7 @@ from CMGTools.WTau3Mu.analyzers.GenMatcherAnalyzer                  import GenMa
 from CMGTools.WTau3Mu.analyzers.L1TriggerAnalyzer                   import L1TriggerAnalyzer
 from CMGTools.WTau3Mu.analyzers.BDTAnalyzer                         import BDTAnalyzer
 from CMGTools.WTau3Mu.analyzers.MVAMuonIDAnalyzer                   import MVAMuonIDAnalyzer
-from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import RecoilCorrector
+#from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import RecoilCorrector
 from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMassAnalyzer
 
 
@@ -195,11 +195,11 @@ muIdAna = cfg.Analyzer(
     useSideBands = False,
 )
 
-recoilAna = cfg.Analyzer(
-    RecoilCorrector,
-    name='RecoilCorrector',
-    pfMetRCFile='CMGTools/WTau3Mu/data/recoilCorrections/TypeI-PFMet_Run2016BtoH.root',
-)
+#recoilAna = cfg.Analyzer(
+#    RecoilCorrector,
+#    name='RecoilCorrector',
+#    pfMetRCFile='CMGTools/WTau3Mu/data/recoilCorrections/TypeI-PFMet_Run2016BtoH.root',
+#)
 
 ## save infos about mass values undder different mass hypothesis
 ## (permutations of KKPi, PiPiK, MuMuK, MuMuPi)
