@@ -36,7 +36,7 @@ from CMGTools.WTau3Mu.analyzers.MVAMuonIDAnalyzer                   import MVAMu
 from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import RecoilCorrector
 
 # import samples
-from CMGTools.WTau3Mu.samples.data_2018                             import datasamplesDoubleMuLowMass_17Sep2018 as samples
+from CMGTools.WTau3Mu.samples.data_2018                             import datasamplesDoubleMuLowMass_PromptReco as samples
 
 puFileData = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
 puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
@@ -254,18 +254,25 @@ sequence = cfg.Sequence([
 ###            SET BATCH OR LOCAL               ###
 ###################################################
 if not production:
-    comp                 = samples[-2]
+    comp                 = samples[0]
     selectedComponents   = [comp]
 #     selectedComponents   = [samples[-7], samples[-5]]
-#     comp.splitFactor     = 1
-#     comp.fineSplitFactor = 4
+    comp.splitFactor     = 1
+    comp.fineSplitFactor = 1
 
 #     for comp in selectedComponents:
 #         comp.fineSplitFactor = 4
 
 #     comp.files           = comp.files[:1]
     comp.files = [
-        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/378FEF34-8D97-B945-8F86-866FD8B945BF.root'
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/378FEF34-8D97-B945-8F86-866FD8B945BF.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/100000/303B5AAE-F4C3-6343-8C9A-876AB7E10127.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/0CA55195-A049-214E-B670-A4007E3E4B15.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/411ED742-6A55-5248-A1A5-D582254423C7.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/3D91DF68-E990-E44F-847D-6083E4078FCD.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/CFE6673D-C1AA-934C-BF9E-EB033BE19F2B.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/B6616C94-D54C-FF4B-912F-D75D09964B69.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/270000/39CC35AB-1473-DA49-A4C9-5D7F255A33C0.root',
     ]
 
 preprocessor = None

@@ -15,13 +15,15 @@ DoubleMuonLowMass_Run2018B_PromptReco = kreator.makeDataComponent('DoubleMuonLow
 DoubleMuonLowMass_Run2018C_PromptReco = kreator.makeDataComponent('DoubleMuonLowMass_Run2018C_PromptReco', '/DoubleMuonLowMass/Run2018C-PromptReco-v3/MINIAOD', 'CMS', '.*root', json, useAAA=True)
 DoubleMuonLowMass_Run2018D_PromptReco = kreator.makeDataComponent('DoubleMuonLowMass_Run2018D_PromptReco', '/DoubleMuonLowMass/Run2018D-PromptReco-v2/MINIAOD', 'CMS', '.*root', json, useAAA=True)
 
+datasamplesDoubleMuLowMass_PromptReco = [
+    DoubleMuonLowMass_Run2018A_PromptReco,
+    DoubleMuonLowMass_Run2018B_PromptReco,
+    DoubleMuonLowMass_Run2018C_PromptReco,
+    DoubleMuonLowMass_Run2018D_PromptReco,
+]    
 datasamplesDoubleMuLowMass_17Sep2018 = [
-#datasamplesDoubleMuLowMass_PromptReco = [
     DoubleMuonLowMass_Run2018A_17Sep2018,
-    #DoubleMuonLowMass_Run2018A_PromptReco,
     DoubleMuonLowMass_Run2018B_17Sep2018,
-    #DoubleMuonLowMass_Run2018B_PromptReco,
     DoubleMuonLowMass_Run2018C_17Sep2018,
-    #DoubleMuonLowMass_Run2018C_PromptReco,
     DoubleMuonLowMass_Run2018D_PromptReco,
 ]
