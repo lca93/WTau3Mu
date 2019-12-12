@@ -38,8 +38,8 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 # import samples
 from CMGTools.WTau3Mu.samples.data_2017                             import datasamplesDoubleMuLowMass31Mar2018 as samples
 
-puFileData = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
-puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
+puFileData = '{CMS}/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2017_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
+puFileMC   = '{CMS}/CMGTools/WTau3Mu/data/pileup/MC_PU_2017_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
 
 ###################################################
 ###                   OPTIONS                   ###
@@ -68,7 +68,6 @@ for sample in samples:
     sample.triggers   += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'                  %i for i in range(1, 12)]
 
     sample.splitFactor = splitFactor(sample, 1e05)
-    sample.json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt'
 
 selectedComponents = samples
 
