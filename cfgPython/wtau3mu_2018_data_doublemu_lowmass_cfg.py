@@ -126,8 +126,9 @@ triggers_and_filters = OrderedDict()
 
 ## trigger matching to be implemented in Tau3MuAnalyzer for 2017 trigger
 # triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15'] = (['hltTau3MuIsoFilter', 'hltTau3MuIsoFilter', 'hltTau3MuIsoFilter'], Counter({83:2, 91:1}))  
-triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']         = 'hltTau3MuPreFilter'
-triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1'] = 'hltTau3MuPreFilterCharge1'
+triggers_and_filters['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15']           = (['hltTau3MuPreFilter'       ], Counter({84:1})) ## is it 84?
+triggers_and_filters['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1']   = (['hltTau3MuPreFilterCharge1'], Counter({84:1}))
+triggers_and_filters['HLT_DoubleMu3_Trk_Tau3mu']                    = (['hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter', 'hltTau3muTkVertexFilter'], Counter({83:2, 91:1}))
 
 tau3MuAna = cfg.Analyzer(
     Tau3MuAnalyzer,
