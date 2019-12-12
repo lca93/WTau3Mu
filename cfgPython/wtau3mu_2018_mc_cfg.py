@@ -1,4 +1,5 @@
 # import dill # needed in order to serialise lambda functions, need to be installed by the user. See http://stackoverflow.com/questions/25348532/can-python-pickle-lambda-functions
+import os
 import PhysicsTools.HeppyCore.framework.config as cfg
 from PhysicsTools.HeppyCore.framework.config     import printComps
 from PhysicsTools.HeppyCore.framework.heppy_loop import getHeppyOption
@@ -20,9 +21,9 @@ from PhysicsTools.Heppy.analyzers.gen.LHEWeightAnalyzer             import LHEWe
 # Tau-tau analysers        
 from CMGTools.H2TauTau.proto.analyzers.METFilter                    import METFilter
 from CMGTools.H2TauTau.proto.analyzers.FileCleaner                  import FileCleaner
-from CMGTools.H2TauTau.proto.analyzers.JetAnalyzer                  import JetAnalyzer
 
 #WTau3Mu analysers
+from CMGTools.WTau3Mu.analyzers.JetAnalyzer                         import JetAnalyzer
 from CMGTools.WTau3Mu.analyzers.Tau3MuAnalyzer                      import Tau3MuAnalyzer
 from CMGTools.WTau3Mu .analyzers.TriggerAnalyzer                    import TriggerAnalyzer
 from CMGTools.WTau3Mu.analyzers.WTau3MuTreeProducer                 import WTau3MuTreeProducer
@@ -40,12 +41,8 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 # import samples, signal
 from CMGTools.WTau3Mu.samples.mc_2018 import WToTauTo3Mu
 
-#puFileMC   = '$CMSSW_BASE/src/CMGTools/H2TauTau/data/MC_Moriond17_PU25ns_V1.root'
-#puFileData = '/afs/cern.ch/user/a/anehrkor/public/Data_Pileup_2016_271036-284044_80bins.root'
-
-puFileData = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/Data_PU_2017_ReRecoJson_HLT_Tau3Mu.root'
-puFileMC   = puFileData
-#puFileMC   = '/afs/cern.ch/user/l/lguzzi/public/Tau3Mu/PU_histos/MC_PU_2017_miniAOD_WTau3Mu.root'
+puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2018_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
+puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2018_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
 
 ###################################################
 ###                   OPTIONS                   ###
@@ -68,16 +65,11 @@ for sample in samples:
     sample.triggers  = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'         %i for i in range(1, 12)]
     sample.triggers += ['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1_v%d' %i for i in range(1, 12)]
     sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'                  %i for i in range(1, 12)]
-    # specify which muon should match to which filter. 
-#     sample.trigger_filters = [
-#         (lambda triplet : triplet.mu1(), ['hltTau3muTkVertexFilter']),
-#         (lambda triplet : triplet.mu2(), ['hltTau3muTkVertexFilter']),
-#         (lambda triplet : triplet.mu3(), ['hltTau3muTkVertexFilter']),
-#     ]
+
     sample.dataset_entries = sample.nGenEvents
     sample.splitFactor     = splitFactor(sample, 1e4)
-    #sample.puFileData      = puFileData
-    #sample.puFileMC        = puFileMC
+    sample.puFileData      = puFileData
+    sample.puFileMC        = puFileMC
 
 selectedComponents = samples
 
@@ -251,7 +243,7 @@ sequence = cfg.Sequence([
     genMatchAna,
     recoilAna,
     vertexFitter,
-    #muIdAna,
+#   muIdAna,
     isoAna,
 #     level1Ana,
     bdtAna,
@@ -268,10 +260,6 @@ if not production:
     comp.splitFactor     = 1
     comp.fineSplitFactor = 1
     comp.files           = comp.files[:50]
-#     comp.files = [
-#       'file:/afs/cern.ch/work/m/manzoni/tauHLT/2017/CMSSW_9_1_0_pre3/src/Tau3Mu/outputFULL.root',
-#       # 'root://xrootd.unl.edu//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v1/000/272/760/00000/68B88794-7015-E611-8A92-02163E01366C.root',
-#     ]
 
 preprocessor = None
 

@@ -1,6 +1,7 @@
 
 # import dill # needed in order to serialise lambda functions, need to be installed by the user. See http://stackoverflow.com/questions/25348532/can-python-pickle-lambda-functions
 from collections import OrderedDict, Counter
+import os
 import PhysicsTools.HeppyCore.framework.config as cfg
 from PhysicsTools.HeppyCore.framework.config     import printComps
 from PhysicsTools.HeppyCore.framework.heppy_loop import getHeppyOption
@@ -20,9 +21,9 @@ from PhysicsTools.Heppy.analyzers.gen.LHEWeightAnalyzer             import LHEWe
 # Tau-tau analysers        
 from CMGTools.H2TauTau.proto.analyzers.METFilter                    import METFilter
 from CMGTools.H2TauTau.proto.analyzers.FileCleaner                  import FileCleaner
-from CMGTools.H2TauTau.proto.analyzers.JetAnalyzer                  import JetAnalyzer
 
 #WTau3Mu analysers
+from CMGTools.WTau3Mu.analyzers.JetAnalyzer                         import JetAnalyzer
 from CMGTools.WTau3Mu.analyzers.TriggerAnalyzer                     import TriggerAnalyzer
 from CMGTools.WTau3Mu.analyzers.Tau3MuAnalyzer                      import Tau3MuAnalyzer
 from CMGTools.WTau3Mu.analyzers.WTau3MuTreeProducer                 import WTau3MuTreeProducer
@@ -38,8 +39,8 @@ from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import Recoi
 # import samples
 from CMGTools.WTau3Mu.samples.data_2018                             import datasamplesDoubleMuLowMass_PromptReco as samples
 
-puFileData = '{CMS}/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2018_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
-puFileMC   = '{CMS}/CMGTools/WTau3Mu/data/pileup/MC_PU_2018_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
+puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2018_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
+puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2018_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
 
 ###################################################
 ###                   OPTIONS                   ###
