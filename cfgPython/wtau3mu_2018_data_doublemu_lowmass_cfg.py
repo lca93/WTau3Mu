@@ -257,14 +257,8 @@ sequence = cfg.Sequence([
 if not production:
     comp                 = samples[0]
     selectedComponents   = [comp]
-#     selectedComponents   = [samples[-7], samples[-5]]
     comp.splitFactor     = 1
     comp.fineSplitFactor = 1
-
-#     for comp in selectedComponents:
-#         comp.fineSplitFactor = 4
-
-#     comp.files           = comp.files[:1]
     comp.files = [
         'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/120000/378FEF34-8D97-B945-8F86-866FD8B945BF.root',
         'root://cms-xrd-global.cern.ch//store/data/Run2018A/DoubleMuonLowMass/MINIAOD/17Sep2018-v1/100000/303B5AAE-F4C3-6343-8C9A-876AB7E10127.root',
