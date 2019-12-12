@@ -1,21 +1,20 @@
-# Unofficial hotfix for CMGTools and Heppy
+# Unofficial hotfix for Heppy (release 94X)
 ## [Heppy] trigger object slicing bugfix (rollback)
 ```
 cd CMSSW_X_X_X/src
 cmsenv
-git remote add lca lca	https://github.com/lguzzi/cmg-cmssw
+git remote add lca https://github.com/lguzzi/cmg-cmssw
 git fetch lca
-git checkout -b heppy_myBranch_tau3mu # create a new branch just in case
-git cherry-pick f3c07f0bb55858a7497e0ff1205bda2261d4e145
+git checkout -b heppy_94X_tau3mu # create a new branch just in case
+git cherry-pick 53fe924f6012d01284e48e7fd083f0a7c99a1f63
 ```
 
-## [Heppy] add MIB to the batch manager and fix an unicode cast bug 
+## [Heppy] add MIB to the batch manager 
 ```
 cd CMSSW_X_X_X/src
 cmsenv
-git remote add lca lca	https://github.com/lguzzi/cmg-cmssw
+git remote add lca https://github.com/lguzzi/cmg-cmssw
 git fetch lca
-git checkout -b heppy_myBranch_tau3mu # create a new branch just in case
-git cherry-pick 3c521d4bcd001d5e9b6725a94b20d8304d1d2a54
-git cherry-pick 5e2793d9bb7057f82d421cc8a432914980d65195
+git checkout -b heppy_94X_tau3mu # create a new branch just in case
+git cherry-pick 071f3015237a3c2bfca07bff528fd562f08b127c
 ```
