@@ -1,12 +1,19 @@
 # WTau3Mu
-
-## follow CMGTools installation, then clone this package into `$CMSSW_BASE/src/CMGTools`  
+## CMSSW setup
+Setup a consistent release of CMSSW (9_4_X for 2017, 10_2_X for 2018)
+```
+cmsrel CMSSW_X_X_X
+cd CMSSW_X_X_X/src
+cmsenv
+scram b -j 8
+```
+## follow [CMGTools](https://github.com/CERN-PH-CMG/cmgtools-lite) installation, then clone this package into `$CMSSW_BASE/src/CMGTools`  
 
 ## install a recent version of scikit learn  
 You may need to override CMSSW's version of scikit learn in order to evaluate the BDT.  
 To do so:  
 ```
-cd CMSSW_8_0_25
+cd CMSSW_X_X_X
 cmsenv                                             # this is meant to have CMSSW's python version handy
 cd                                                 # go back to your home
 python -m pip install --upgrade --user sklearn     # do a local installation of the most recent scikit learn *against the correct python version!!*
