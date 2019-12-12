@@ -5,6 +5,11 @@ Setup a consistent release of CMSSW (9_4_X for 2017, 10_2_X for 2018)
 cmsrel CMSSW_X_X_X
 cd CMSSW_X_X_X/src
 cmsenv
+git cms-init
+git cms-addpkg PhysicsTools/Heppy
+git cms-addpkg PhysicsTools/HeppyCore
+git cms-addpkg RecoEgamma
+git cms-addpkg RecoTauTag/RecoTau
 scram b -j 8
 ```
 ## follow [CMGTools](https://github.com/CERN-PH-CMG/cmgtools-lite) installation, then clone this package into `$CMSSW_BASE/src/CMGTools`  
