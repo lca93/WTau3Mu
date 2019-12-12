@@ -50,10 +50,10 @@ class JetAnalyzer(Analyzer):
 
     def __init__(self, cfg_ana, cfg_comp, looperName):
         super(JetAnalyzer, self).__init__(cfg_ana, cfg_comp, looperName)
-        self.btagSF = {
-            'medium':BTagSF(0, wp='medium'),
-            'loose':BTagSF(0, wp='loose')
-        }
+        #self.btagSF = {
+        #    'medium':BTagSF(0, wp='medium'),
+        #    'loose':BTagSF(0, wp='loose')
+        #}
         self.recalibrateJets = getattr(cfg_ana, 'recalibrateJets', False)
 
         mcGT = getattr(cfg_ana, 'mcGT', '80X_mcRun2_asymptotic_2016_TrancheIV_v8')
@@ -268,18 +268,18 @@ class JetAnalyzer(Analyzer):
         # jet.btagFlag = jet.btagMVA > csv_cut
 
         # Use the following once we start applying data-MC scale factors:
-        setattr(jet, 'btagFlag'+wp,
-            self.btagSF[wp].isBTagged(
-                pt=jet.pt(),
-                eta=jet.eta(),
-                csv=jet.btag("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
-                jetflavor=abs(jet.partonFlavour()),
-                is_data=not self.cfg_comp.isMC,
-                csv_cut=csv_cut
-            )
-        )
+        #setattr(jet, 'btagFlag'+wp,
+        #    self.btagSF[wp].isBTagged(
+        #        pt=jet.pt(),
+        #        eta=jet.eta(),
+        #        csv=jet.btag("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
+        #        jetflavor=abs(jet.partonFlavour()),
+        #        is_data=not self.cfg_comp.isMC,
+        #        csv_cut=csv_cut
+        #    )
+        #)
 
         return self.testJet(jet) and \
             abs(jet.eta()) < 2.4 and \
-            getattr(jet, 'btagFlag'+wp) and \
             self.testJetID(jet)
+            #getattr(jet, 'btagFlag'+wp) and \
