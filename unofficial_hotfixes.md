@@ -25,7 +25,7 @@ cmsenv
 git remote add lca lca	https://github.com/lguzzi/cmg-cmssw
 git fetch lca
 git checkout -b heppy_myBranch_tau3mu # create a new branch just in case
-git cherry-pick 1f60ad104285682c04452a1b13e8dae4456f0e49
+git cherry-pick f3c07f0bb55858a7497e0ff1205bda2261d4e145
 ```
 
 ## [Heppy] add MIB to the batch manager and fix an unicode cast bug 
@@ -35,9 +35,16 @@ cmsenv
 git remote add lca lca	https://github.com/lguzzi/cmg-cmssw
 git fetch lca
 git checkout -b heppy_myBranch_tau3mu # create a new branch just in case
-git cherry-pick b603b53964c96fa3a0bc198f4fd05b2ec80432c9
-git cherry-pick f42dabed7cf4398d014e54382dc3398661a06e11
-git cherry-pick d0d64ee4f43e8e6985681b0c5650053469c82013
+git cherry-pick 3c521d4bcd001d5e9b6725a94b20d8304d1d2a54
+git cherry-pick 5e2793d9bb7057f82d421cc8a432914980d65195
 ```
 
-
+## [Heppy] fix bug in Tau class relIso function oveloading
+```
+cd CMSSW_X_X_X/src
+cmsenv
+git remote add lca lca	https://github.com/lguzzi/cmg-cmssw
+git fetch lca
+git checkout -b heppy_myBranch_tau3mu # create a new branch just in case
+git cherry-pick 1febfc9d05561716a78ba044e2c6ad4535add061
+```
