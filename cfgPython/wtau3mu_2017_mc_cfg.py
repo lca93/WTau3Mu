@@ -39,7 +39,7 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 
 
 # import samples, signal
-from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu
+from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu_Pythia as WToTauTo3Mu
 
 puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2017_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
 puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2017_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
