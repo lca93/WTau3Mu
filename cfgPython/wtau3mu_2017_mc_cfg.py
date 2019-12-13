@@ -34,15 +34,15 @@ from CMGTools.WTau3Mu.analyzers.GenMatcherAnalyzer                  import GenMa
 from CMGTools.WTau3Mu.analyzers.L1TriggerAnalyzer                   import L1TriggerAnalyzer
 from CMGTools.WTau3Mu.analyzers.BDTAnalyzer                         import BDTAnalyzer
 from CMGTools.WTau3Mu.analyzers.MVAMuonIDAnalyzer                   import MVAMuonIDAnalyzer
-#from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import RecoilCorrector
+from CMGTools.WTau3Mu.analyzers.RecoilCorrector                     import RecoilCorrector
 from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMassAnalyzer
 
 
 # import samples, signal
 from CMGTools.WTau3Mu.samples.mc_2017 import WToTauTo3Mu
 
-puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2018_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
-puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2018_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
+puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2017_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
+puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2017_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
 
 ###################################################
 ###                   OPTIONS                   ###
@@ -188,11 +188,11 @@ muIdAna = cfg.Analyzer(
     useSideBands = False,
 )
 
-#recoilAna = cfg.Analyzer(
-#    RecoilCorrector,
-#    name='RecoilCorrector',
-#    pfMetRCFile='CMGTools/WTau3Mu/data/recoilCorrections/TypeI-PFMet_Run2016BtoH.root',
-#)
+recoilAna = cfg.Analyzer(
+    RecoilCorrector,
+    name='RecoilCorrector',
+    pfMetRCFile='CMGTools/WTau3Mu/data/recoilCorrections/TypeI-PFMet_Run2016BtoH.root',
+)
 
 ## save infos about mass values undder different mass hypothesis
 ## (permutations of KKPi, PiPiK, MuMuK, MuMuPi)
@@ -240,107 +240,15 @@ sequence = cfg.Sequence([
     tau3MuAna,
     jetAna,
     genMatchAna,
-#     recoilAna,
+    recoilAna,
     vertexFitter,
-    #muIdAna,
+#     muIdAna,
     isoAna,
 #     level1Ana,
     bdtAna,
     PiKMassAna,
     treeProducer,
 ])
-
-###################################################
-###                PICK EVENTS                  ###
-###################################################
-if pick_events:
-    eventSelector.toSelect = [
-         5870,
-         5900,
-         5899,
-         5912,
-         5927,
-         5950,
-         5955,
-         6000,
-        38071,
-         6019,
-         6025,
-         6045,
-         6130,
-         6160,
-         6195,
-         9639,
-         9702,
-         9740,
-         9744,
-         9780,
-        38203,
-        38264,
-        38281,
-        38397,
-        59654,
-        59695,
-        59734,
-        59733,
-        59737,
-        59751,
-        59802,
-        59944,
-        59974,
-        59987,
-        64309,
-        64305,
-        64332,
-        64429,
-        64479,
-        80175,
-        87267,
-        87353,
-        87835,
-        87852,
-        87933,
-        87953,
-        88084,
-         7027,
-         7076,
-         7079,
-         7165,
-        28614,
-        28718,
-        28747,
-        28762,
-        28792,
-        28875,
-        28942,
-        28946,
-        28969,
-        28997,
-        58073,
-        58157,
-        62806,
-        62826,
-        62922,
-        63018,
-        63041,
-        63133,
-        63141,
-        79022,
-        79068,
-        79120,
-        79161,
-        79191,
-        78382,
-        78407,
-        78544,
-        83347,
-        83370,
-        84002,
-        84065,
-        84079,
-        84081,
-    ]
-    sequence.insert(0, eventSelector)
 
 ###################################################
 ###            SET BATCH OR LOCAL               ###
@@ -351,10 +259,6 @@ if not production:
     comp.splitFactor     = 1
     comp.fineSplitFactor = 1
     comp.files           = comp.files[:10]
-#     comp.files = [
-#       'file:/afs/cern.ch/work/m/manzoni/tauHLT/2017/CMSSW_9_1_0_pre3/src/Tau3Mu/outputFULL.root',
-#       # 'root://xrootd.unl.edu//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v1/000/272/760/00000/68B88794-7015-E611-8A92-02163E01366C.root',
-#     ]
 
 preprocessor = None
 
