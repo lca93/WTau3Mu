@@ -11,9 +11,13 @@ wps='0.60 0.61 0.62 0.63 0.64 0.65 0.66 0.67 0.68 0.69 0.70 0.71 0.72 0.73 0.74 
 # wps='0.6'
 
 # phi veto
-baseline="( ((abs(cand_refit_mass12-1.020)<0.02)*(cand_charge12==0)) + ((abs(cand_refit_mass13-1.020)<0.02)*(cand_charge13==0)) + ((abs(cand_refit_mass23-1.020)<0.02)*(cand_charge23==0)) )==0"
+baseline="   (  ((abs(cand_refit_mass12 - 1.020) < 0.02) * (cand_charge12 == 0)) + \
+                ((abs(cand_refit_mass13 - 1.020) < 0.02) * (cand_charge13 == 0)) + \
+                ((abs(cand_refit_mass23 - 1.020) < 0.02) * (cand_charge23 == 0)) ) == 0"
 # omega veto
-baseline+=' & ( ((abs(cand_refit_mass12-0.782)<0.02)*(cand_charge12==0)) + ((abs(cand_refit_mass13-0.782)<0.02)*(cand_charge13==0)) + ((abs(cand_refit_mass23-0.782)<0.02)*(cand_charge23==0)) )==0'
+baseline+=" &(  ((abs(cand_refit_mass12 - 0.782) < 0.02) * (cand_charge12 == 0)) + \
+                ((abs(cand_refit_mass13 - 0.782) < 0.02) * (cand_charge13 == 0)) + \
+                ((abs(cand_refit_mass23 - 0.782) < 0.02) * (cand_charge23 == 0)) ) == 0"
 # 3mu charge and mass window
 baseline+=' & abs(cand_charge)==1 & abs(cand_refit_tau_mass-1.8)<0.2'
 # HLT dimuon mass cut override
