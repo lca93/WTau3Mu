@@ -63,6 +63,7 @@ samples = [WToTauTo3Mu]
 
 for sample in samples:
     sample.triggers  = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'  %i for i in range(1, 12)]
+    sample.triggers += ['HLT_Tau3Mu_Mu5_Mu1_TkMu1_IsoTau10_Charge1_v%d' %i for i in range(1, 12)]
     sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'           %i for i in range(1, 12)]
 
     sample.dataset_entries = sample.nGenEvents
