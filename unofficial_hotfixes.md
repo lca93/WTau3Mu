@@ -9,6 +9,16 @@ git checkout -b heppy_94X_tau3mu # create a new branch just in case
 git cherry-pick 53fe924f6012d01284e48e7fd083f0a7c99a1f63
 ```
 
+## [Heppy] disable completely the looper print out
+```
+cd CMSSW_X_X_X/src
+cmsenv
+git remote add lca https://github.com/lguzzi/cmg-cmssw
+git fetch lca
+git checkout -b heppy_94X_tau3mu # create a new branch just in case
+git cherry-pick a09c1e80387fb9f029105f07f7cc9d9a33c1b92e
+```
+
 ## [Heppy] add MIB to the batch manager 
 ```
 cd CMSSW_X_X_X/src
