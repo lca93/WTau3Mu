@@ -6,13 +6,26 @@ cmsrel CMSSW_X_X_X
 cd CMSSW_X_X_X/src
 cmsenv
 git cms-init
+git remote add cmg-cmssw https://github.com/CERN-PH-CMG/cmg-cmssw
+git fetch cmg-cmssw
+git checkout -b heppy_[94X, 102X]_dev cmg-cmssw/heppy_[94X, 102X]_dev
 git cms-addpkg PhysicsTools/Heppy
 git cms-addpkg PhysicsTools/HeppyCore
 git cms-addpkg RecoEgamma
 git cms-addpkg RecoTauTag/RecoTau
 scram b -j 8
 ```
-## follow [CMGTools](https://github.com/CERN-PH-CMG/cmgtools-lite) installation, then clone this package into `$CMSSW_BASE/src/CMGTools`  
+## follow [CMGTools](https://github.com/CERN-PH-CMG/cmgtools-lite) installation, then clone this package into `$CMSSW_BASE/src/CMGTools`
+
+## download external files
+download the required files from 
+```
+$CMSSW_BASE/src/CMGTools/WTau3Mu/data
+``` 
+and 
+```
+$CMSSW_BASE/src/CMGTools/RootTools/data/jec
+```
 
 ## install a recent version of scikit learn  
 You may need to override CMSSW's version of scikit learn in order to evaluate the BDT.  
