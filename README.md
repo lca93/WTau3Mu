@@ -11,7 +11,6 @@ git fetch cmg-cmssw
 git checkout -b heppy_[94X, 102X]_dev cmg-cmssw/heppy_[94X, 102X]_dev
 git cms-addpkg PhysicsTools/Heppy
 git cms-addpkg PhysicsTools/HeppyCore
-git cms-addpkg RecoEgamma
 git cms-addpkg RecoTauTag/RecoTau
 scram b -j 8
 ```
