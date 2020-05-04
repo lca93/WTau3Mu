@@ -68,9 +68,11 @@ class Tau3MuAnalyzer(Analyzer):
         count.register('> 0 vertex')
         count.register('> 0 tri-muon')
         # count.register('pass resonance veto')
-        count.register('m < 3 GeV')
+        count.register('m < mass cut')
         count.register('pass (mu, mu, mu) Z cut')
         count.register('trigger matched')
+
+        self.mass_cut = getattr(self.cfg_ana, 'mass_cut', 3.)
 
     def buildMuons(self, muons, event):
         '''
@@ -188,11 +190,11 @@ class Tau3MuAnalyzer(Analyzer):
         seltau3mu = event.tau3mus
 
         # mass cut
-        seltau3mu = [triplet for triplet in seltau3mu if triplet.massMuons() < 3.]
+        seltau3mu = [triplet for triplet in seltau3mu if triplet.massMuons() < self.mass_cut]
 
         if len(seltau3mu) == 0:
             return False
-        self.counters.counter('Tau3Mu').inc('m < 3 GeV')
+        self.counters.counter('Tau3Mu').inc('m < mass cut')
 
         # max longitudinal distance among the three muons
         dzcut = getattr(self.cfg_ana, 'dz_cut', 1) # 1 cm
