@@ -96,6 +96,10 @@ triplet_vars = [
 # generic particle
 particle_vars = [
     Variable('pt'    , lambda p: p.pt() ),
+    Variable('px'    , lambda p: p.px() ),
+    Variable('py'    , lambda p: p.py() ),
+    Variable('pz'    , lambda p: p.pz() ),
+    Variable('energy', lambda p: p.energy() ),
     Variable('eta'   , lambda p: p.eta()),
     Variable('phi'   , lambda p: p.phi()),
     Variable('charge', lambda p: p.charge() if hasattr(p, 'charge') else 0), # charge may be non-integer for gen particles
