@@ -26,6 +26,14 @@ WToTauTo3Mu_Pythia = cfg.MCComponent(
 WToTauTo3Mu_MadGraph = kreator.makeMCComponent(
     name        = 'WToTauTo3Mu' ,
     dataset     = '/W_ToTau_ToMuMuMu_TuneCP5_13TeV-pythia8-madgraph/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+    user        = 'CMS'         ,
+    pattern     = '.*root'      ,
+    useAAA      = True          ,
+)
+
+WToTauTo3Mu_Pythia_ULcentral = kreator.makeMCComponent(
+    name        = 'WToTauTo3Mu' ,
+    dataset     = '/W_ToTau_ToMuMuMu_TuneCP5_13TeV-pythia8/RunIISummer19UL17MiniAOD-106X_mc2017_realistic_v6-v2/MINIAODSIM',
     user        = 'CMS'         , 
     pattern     = '.*root'      ,
     useAAA      = True          ,
