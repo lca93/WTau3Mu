@@ -99,10 +99,20 @@ class WTau3MuTreeProducerBase(TreeAnalyzerNumpy):
     def bookGenParticle(self, tree, p_name):
         self.bookParticle(tree, p_name)
         self.var(tree, '{p_name}_pdgId'.format(p_name=p_name))
+        self.var(tree, '{p_name}_dRmin'.format(p_name=p_name))
+        self.var(tree, '{p_name}_deltaPt'.format(p_name=p_name))
 
     def fillGenParticle(self, tree, p_name, particle):
         self.fillParticle(tree, p_name, particle)
         self.fill(tree, '{p_name}_pdgId'.format(p_name=p_name), particle.pdgId() if not hasattr(particle, 'detFlavour') else particle.detFlavour)
+        if hasattr(particle, 'dRmin'):
+            self.fill(tree, '{p_name}_dRmin'.format(p_name=p_name), particle.dRmin)
+        else: 
+            self.fill(tree, '{p_name}_dRmin'.format(p_name=p_name), -99)
+        if hasattr(particle, 'deltaPt'):
+            self.fill(tree, '{p_name}_deltaPt'.format(p_name=p_name), particle.deltaPt)
+        else: 
+            self.fill(tree, '{p_name}_deltaPt'.format(p_name=p_name), -99)
 
     # stage-2 L1 object
     def bookL1object(self, tree, p_name):

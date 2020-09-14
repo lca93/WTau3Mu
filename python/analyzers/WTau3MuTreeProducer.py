@@ -42,7 +42,8 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         self.bookGenParticle(self.tree, 'mu1_gen')
         self.bookGenParticle(self.tree, 'mu2_gen')
         self.bookGenParticle(self.tree, 'mu3_gen')
-        self.bookGenParticle(self.tree, 'cand_refit_gen')
+        self.bookGenParticle(self.tree, 'cand_refit_gentau')
+        self.bookGenParticle(self.tree, 'cand_refit_genphi')
         self.bookParticle(self.tree, 'gen_met')
 
         ## particles information
@@ -68,7 +69,7 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
         ## build the mass hypothesis combinations accoridng to PiKMassAnalyzer definitions
         for ll in ( ('k', 'p'), ('k', 'm'), ('p', 'm')):
             for (l1, l2, l3) in product(ll, repeat = 3):
-                if l1 == l2 == l3: continue
+                #if l1 == l2 == l3: continue
                 ## only 0 or 2 muons
                 if sum([obj == 'm' for obj in (l1, l2, l3)]) == 1:
                     continue
@@ -172,7 +173,9 @@ class WTau3MuTreeProducer(WTau3MuTreeProducerBase):
             self.fillParticle(self.tree, 'gen_met', event.genmet)
 
         if hasattr(event, 'gentau') and event.gentau is not None: 
-            self.fillParticle(self.tree, 'cand_refit_gen', event.gentau)
+            self.fillGenParticle(self.tree, 'cand_refit_gentau', event.gentau)
+        if hasattr(event, 'genphi') and event.genphi is not None: 
+            self.fillGenParticle(self.tree, 'cand_refit_genphi', event.gentau)
 
         ## particles information
         if hasattr(event, 'HLT_tau'):

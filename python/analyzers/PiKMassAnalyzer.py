@@ -5,6 +5,7 @@ from itertools import product
 class PiKMassAnalyzer(Analyzer):
     '''
     save infos about mass(mu1, mu2, mu3) with different mass hypothesis
+    KKK   , PiPiPi,
     KKPi  , KPiK  , PiKK
     PiPiK , PiKPi , KPiPi
     MuMuPi, MuPiMu, PiMuMu
@@ -38,7 +39,7 @@ class PiKMassAnalyzer(Analyzer):
 
         for list_of_interest in (kp_list, mp_list, mk_list):
             for (m1, m2, m3) in product(list_of_interest, repeat = 3):
-                if m1 == m2 == m3: continue
+                #if m1 == m2 == m3: continue
                 ## only 0 or 2 muons
                 if sum([obj[0] == 'm' for obj in (m1, m2, m3)]) == 1:
                     continue
