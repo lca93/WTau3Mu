@@ -37,7 +37,8 @@ from CMGTools.WTau3Mu.analyzers.MVAMuonIDAnalyzer                   import MVAMu
 from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMassAnalyzer
 
 # import samples
-from CMGTools.WTau3Mu.samples.data_2017                             import datasamplesDoubleMuLowMass31Mar2018 as samples
+#from CMGTools.WTau3Mu.samples.data_2017 import datasamplesDoubleMuLowMass31Mar2018 as samples
+from CMGTools.WTau3Mu.samples.data_2017 import datasamplesDoubleMuLowMass09Aug2019UL as samples
 
 puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2017_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
 puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2017_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
@@ -105,7 +106,7 @@ triggerAna = cfg.Analyzer(
     requireTrigger=True,
     usePrescaled=False,
     unpackLabels=True,
-    triggerObjectsHandle = ['slimmedPatTrigger', '', 'PAT'],
+    #triggerObjectsHandle = ['slimmedPatTrigger', '', 'RECO'],
 )
 
 vertexAna = cfg.Analyzer(

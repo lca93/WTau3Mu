@@ -39,7 +39,8 @@ from CMGTools.WTau3Mu.analyzers.PiKMassAnalyzer                     import PiKMa
 
 
 # import samples, signal
-from CMGTools.WTau3Mu.samples.mc_2018 import WToTauTo3Mu_Pythia as WToTauTo3Mu
+from CMGTools.WTau3Mu.samples.mc_2018_shiftedMasses import WToTauTo3Mu_Pythia_UltraLegacy_shiftedMasses as WToTauTo3Mu
+#from CMGTools.WTau3Mu.samples.mc_2018 import WToTauNu_Tau3Mu_Pythia_ULcentral as WToTauTo3Mu
 
 puFileData = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/Data_PileUp_2018_69p2.root'     .format(CMS = os.path.expandvars('$CMSSW_BASE'))
 puFileMC   = '{CMS}/src/CMGTools/WTau3Mu/data/pileup/MC_PU_2018_miniAOD_WTau3Mu.root'.format(CMS = os.path.expandvars('$CMSSW_BASE'))
@@ -59,7 +60,7 @@ use_puppimet       = getHeppyOption('use_puppimet'      , True )
 ###################################################
 ###               HANDLE SAMPLES                ###
 ###################################################
-samples = [WToTauTo3Mu]
+samples = [WToTauTo3Mu] if type(WToTauTo3Mu) is not list else WToTauTo3Mu
 
 for sample in samples:
     sample.triggers  = ['HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_v%d'         %i for i in range(1, 12)]
@@ -67,7 +68,7 @@ for sample in samples:
     sample.triggers += ['HLT_DoubleMu3_Trk_Tau3mu_v%d'                  %i for i in range(1, 12)]
 
     sample.dataset_entries = sample.nGenEvents
-    sample.splitFactor     = splitFactor(sample, 1e4)
+    sample.splitFactor     = len(sample.files)
     sample.puFileData      = puFileData
     sample.puFileMC        = puFileMC
 
@@ -192,7 +193,7 @@ muIdAna = cfg.Analyzer(
 recoilAna = cfg.Analyzer(
     RecoilCorrector,
     name='RecoilCorrector',
-    pfMetRCFile='CMGTools/WTau3Mu/data/recoilCorrections/TypeI-PFMet_Run2016BtoH.root',
+    pfMetRCFile='CMGTools/WTau3Mu/data/recoilCorrections/TypeI-PFMet_Run2018.root',
 )
 
 ## save infos about mass values undder different mass hypothesis

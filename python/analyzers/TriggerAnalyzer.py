@@ -48,7 +48,7 @@ class TriggerAnalyzer(Analyzer):
                 )
         else:    
             self.handles['triggerObjects'] =  AutoHandle(
-                'selectedPatTrigger',
+                'slimmedPatTrigger',
                 'std::vector<pat::TriggerObjectStandAlone>'
                 )
  
