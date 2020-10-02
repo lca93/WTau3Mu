@@ -1,2 +1,2 @@
-wget https://virgilio.mib.infn.it/~manzoni/tau3mu/bdt_tau3mu.xml
-wget https://virgilio.mib.infn.it/~manzoni/tau3mu/classifier.pkl
+wget --no-check-certificate https://virgilio.mib.infn.it/~manzoni/tau3mu/bdt_tau3mu.xml
+wget --no-check-certificate https://virgilio.mib.infn.it/~manzoni/tau3mu/classifier.pkl
