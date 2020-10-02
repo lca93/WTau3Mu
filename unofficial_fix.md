@@ -1,4 +1,7 @@
-# Unofficial hotfix for Heppy (release 94X)
+# Outdated
+#
+
+# Unofficial fix for Heppy (release 94X)
 ## [Heppy] trigger object slicing bugfix (rollback)
 ```
 cd CMSSW_X_X_X/src
@@ -35,7 +38,7 @@ mv run_condor_simple.sh run_condor_simple.sh.old
 ln -s $CMSSW_BASE/src/PhysicsTools/HeppyCore/scripts/run_condor_simple.sh .
 ```
 
-# Unofficial hotfix for Heppy (release 102X)
+# Unofficial fix for Heppy (release 102X)
 ## [Heppy] trigger object slicing bugfix (rollback)
 ```
 cd CMSSW_X_X_X/src
