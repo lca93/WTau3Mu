@@ -82,6 +82,7 @@ triplet_vars = [
     Variable('dRtauMuonMax'                      , lambda cand : cand.dRtauMuonMax()                    ),
     Variable('dPhitauMET'                        , lambda cand : cand.dPhitauMET()                      ),
     Variable('tau_pt'                            , lambda cand : cand.p4Muons().pt()                    ),
+    Variable('tau_ptE'                           , lambda cand : getattr(cand, 'pt_kinfit_error', -99)  ),
     Variable('tau_eta'                           , lambda cand : cand.p4Muons().eta()                   ),
     Variable('tau_phi'                           , lambda cand : cand.p4Muons().phi()                   ),
     Variable('tau_mass'                          , lambda cand : cand.p4Muons().mass()                  ),

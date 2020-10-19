@@ -285,8 +285,22 @@ class Tau3MuKinematicVertexFitterAnalyzer(Analyzer):
         ## get the kinfit error of the tau mass
         ## see https://github.com/cms-cvs-history/RecoVertex-KinematicFitPrimitives/blob/master/interface/KinematicParameters.h#L10
         event.tau3muRefit.mass_kinfit_error = tauref.currentState().kinematicParametersError().matrix()(6, 6)
+        ## get the pT error from kinfit
+        event.tau3muRefit.pt_kinfit_error = self.get_pt_error(tauref)
 
         return True
+
+    @staticmethod
+    def get_pt_error(ref):
+        px = ref.currentState().kinematicParameters().vector()(3)
+        py = ref.currentState().kinematicParameters().vector()(4)
+        pt = math.sqrt(px**2 + py**2)
+
+        sx = math.sqrt(ref.currentState().kinematicParametersError().matrix()(3, 3))
+        sy = math.sqrt(ref.currentState().kinematicParametersError().matrix()(4, 4))
+        sxy= ref.currentState().kinematicParametersError().matrix()(3, 4)
+        
+        return math.sqrt(px**2*sx**2 + py**2*sy**2 + 2.*px*py*sxy) / pt
 
     @staticmethod
     def buildP4(ref):
