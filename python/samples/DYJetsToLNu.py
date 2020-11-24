@@ -13,4 +13,4 @@ DYJetsToLL_M50_2018 = kreator.makeMCComponent(
     user        = 'CMS'         , 
     pattern     = '.*root'      ,
     useAAA      = True          ,
-) ; DYJetsToLL_M50.nGenEvents = 100194597
+) ; DYJetsToLL_M50_2018.nGenEvents = 100194597
